@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import logo from './logo.svg';
 import './App.css';
-import { Goals } from './components/Goals';
 
 function App() {
-  const [goals, setGoals] = useState([]);
-
-  useEffect(() => {
-    fetch("/users/1").then(response => 
-      response.json().then(data => {
-        setGoals(data.goals);
-      })
-    );
-  }, []);
-
   return (
     <div className="App">
-      <Goals goals={goals}/>
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
     </div>
   );
 }
