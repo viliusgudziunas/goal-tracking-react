@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Goals from "./components/Goals";
 import GoalForm from "./components/GoalForm";
+import NewGoal from "./components/NewGoal";
 
 function App() {
   const [goals, setGoals] = useState([]);
@@ -16,6 +17,7 @@ function App() {
   return (
     <div>
       <Goals goals={goals} />
+      <NewGoal />
       <GoalForm
         onNewGoal={goal => setGoals(currentGoals => [...currentGoals, goal])}
       />
