@@ -1,5 +1,6 @@
-import React from "react";
-import { Row, Col, Button } from "react-bootstrap";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Row, Col, Button } from 'react-bootstrap';
 
 const Goal = ({ name }) => {
   return (
@@ -7,7 +8,7 @@ const Goal = ({ name }) => {
       <Col sm={6}>{name}</Col>
       <Col>Hello</Col>
       <Col>
-        <Button variant="success" size="sm">
+        <Button variant='success' size='sm'>
           Done!
         </Button>
       </Col>
@@ -16,3 +17,7 @@ const Goal = ({ name }) => {
 };
 
 export default Goal;
+
+Goal.propTypes = {
+  name: PropTypes.string
+};
