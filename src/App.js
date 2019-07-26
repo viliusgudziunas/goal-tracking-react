@@ -23,6 +23,17 @@ function App() {
         console.log(response);
       });
   };
+
+  const handleClick = e => {
+    fetch("/users/1")
+      .then(response => {
+        console.log(response);
+      })
+      .then(response => {
+        console.log(response);
+      });
+  };
+
   return (
     <div className="App">
       <form onSubmit={handleSubmit}>
@@ -40,6 +51,7 @@ function App() {
         />
         <button>Submit</button>
       </form>
+      <button onClick={handleClick}>Click Me</button>
     </div>
   );
 }
