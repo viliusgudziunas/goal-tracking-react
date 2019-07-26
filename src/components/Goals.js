@@ -1,12 +1,15 @@
 import React from "react";
+import { Container } from "react-bootstrap";
+import Goal from "./Goal";
 
 const Goals = ({ goals }) => {
   return (
-    <div>
+    <Container>
       {goals.map((goal, index) => {
-        return <h4 key={index}>{goal.name}</h4>;
+        console.log(goal.name);
+        return <Goal key={index} name={goal.name} />;
       })}
-    </div>
+    </Container>
   );
 };
 

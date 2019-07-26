@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
 import Goals from "./components/Goals";
 import GoalForm from "./components/GoalForm";
 
@@ -15,7 +14,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div>
       <Goals goals={goals} />
       <GoalForm
         onNewGoal={goal => setGoals(currentGoals => [...currentGoals, goal])}
