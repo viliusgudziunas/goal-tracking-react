@@ -7,9 +7,6 @@ import Goal from './Goal';
 const Goals = ({ goals }) => {
   return (
     <Container>
-      <Row className='goals-header'>
-        <Col>Goals Tracker</Col>
-      </Row>
       <Accordion className='goals-accordion'>
         {goals.map((goal, index) => {
           return <Goal key={goal.name} name={goal.name} eventKey={index} />;

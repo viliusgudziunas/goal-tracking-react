@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './styles/Goal.css';
 import { Row, Col, Button, Accordion, Card } from 'react-bootstrap';
+import GoalOptions from './GoalOptions';
 
 const Goal = ({ name, eventKey }) => {
   const handleClick = e => {
@@ -30,7 +31,9 @@ const Goal = ({ name, eventKey }) => {
         </Row>
       </Card.Header>
       <Accordion.Collapse eventKey={eventKey}>
-        <Card.Body>Hey everyone</Card.Body>
+        <Card.Body>
+          <GoalOptions />
+        </Card.Body>
       </Accordion.Collapse>
     </Card>
   );
