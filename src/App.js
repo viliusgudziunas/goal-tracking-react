@@ -1,45 +1,27 @@
-import React, { useState } from "react";
-import "./App.css";
+import React, { useState, useEffect } from 'react';
+import Goals from './components/Goals';
+import GoalForm from './components/GoalForm';
 
 function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [goals, setGoals] = useState([]);
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    fetch("/authenticate", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email, password })
-    })
-      .then(response => {
-        console.log(response);
-        response.json();
+  useEffect(() => {
+    fetch('/users/1').then(res =>
+      res.json().then(data => {
+        setGoals(data.goals);
       })
-      .then(response => {
-        console.log(response);
-      });
+    );
+  }, []);
+
+  // console.log(goals);
+  const onNewGoal = goal => {
+    setGoals(currentGoals => [...currentGoals, goal]);
   };
+
   return (
-    <div className="App">
-      <form onSubmit={handleSubmit}>
-        Email:
-        <input
-          type="text"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <button>Submit</button>
-      </form>
+    <div>
+      <Goals goals={goals} />
+      <GoalForm onNewGoal={onNewGoal} goals={goals} />
     </div>
   );
 }
