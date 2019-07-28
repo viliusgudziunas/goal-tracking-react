@@ -31,9 +31,7 @@ const Goal = ({ name, eventKey }) => {
         </Row>
       </Card.Header>
       <Accordion.Collapse eventKey={eventKey}>
-        <Card.Body>
-          <GoalOptions />
-        </Card.Body>
+        <GoalOptions />
       </Accordion.Collapse>
     </Card>
   );
