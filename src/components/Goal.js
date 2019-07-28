@@ -1,21 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './styles/Goal.css';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, Accordion, Card } from 'react-bootstrap';
 
-const Goal = ({ name }) => {
+const Goal = ({ name, eventKey }) => {
+  const handleClick = e => {
+    e.preventDefault();
+  };
+
   return (
-    <Row className='goal-row'>
-      <Col>{name}</Col>
-      <Button variant='success' size='sm' className='goal-done-button'>
-        Done!
-      </Button>
-    </Row>
+    <Card>
+      <Card.Header className='goal-card-header'>
+        <Row>
+          <Accordion.Toggle
+            as={Col}
+            eventKey={eventKey}
+            className='goal-card-accordion-toggle'
+          >
+            {name}
+          </Accordion.Toggle>
+          <Button
+            variant='success'
+            size='sm'
+            className='goal-done-button'
+            onClick={handleClick}
+          >
+            Done!
+          </Button>
+        </Row>
+      </Card.Header>
+      <Accordion.Collapse eventKey={eventKey}>
+        <Card.Body>Hey everyone</Card.Body>
+      </Accordion.Collapse>
+    </Card>
   );
 };
 
 export default Goal;
 
 Goal.propTypes = {
-  name: PropTypes.string
+  name: PropTypes.string,
+  eventKey: PropTypes.number
 };

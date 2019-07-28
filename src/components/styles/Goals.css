@@ -2,4 +2,10 @@
   margin-top: 1%;
   padding-bottom: 1%;
   border-bottom: 1px solid black;
+  text-align: center;
+  font-size: 20px;
+}
+
+.goals-accordion {
+  margin-top: 1%;
 }

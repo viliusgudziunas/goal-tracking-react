@@ -1,18 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './styles/Goals.css';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Accordion } from 'react-bootstrap';
 import Goal from './Goal';
 
 const Goals = ({ goals }) => {
   return (
     <Container>
       <Row className='goals-header'>
-        <Col>Goal Name</Col>
+        <Col>Goals Tracker</Col>
       </Row>
-      {goals.map(goal => {
-        return <Goal key={goal.name} name={goal.name} />;
-      })}
+      <Accordion className='goals-accordion'>
+        {goals.map((goal, index) => {
+          return <Goal key={goal.name} name={goal.name} eventKey={index} />;
+        })}
+      </Accordion>
     </Container>
   );
 };
