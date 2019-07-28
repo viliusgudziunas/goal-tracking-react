@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './styles/Components.css';
-import { Container } from 'react-bootstrap';
+import './styles/Goals.css';
+import { Container, Row, Col } from 'react-bootstrap';
 import Goal from './Goal';
 
 const Goals = ({ goals }) => {
   return (
-    <Container className="Container1">
+    <Container>
+      <Row className='goals-header'>
+        <Col>Goal Name</Col>
+      </Row>
       {goals.map(goal => {
-        console.log(goal.name);
         return <Goal key={goal.name} name={goal.name} />;
       })}
     </Container>
@@ -18,5 +20,5 @@ const Goals = ({ goals }) => {
 export default Goals;
 
 Goals.propTypes = {
-  goals: PropTypes.object
+  goals: PropTypes.array
 };

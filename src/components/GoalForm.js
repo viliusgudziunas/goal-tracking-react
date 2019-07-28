@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
-import './styles/Components.css';
+import './styles/GoalForm.css';
+import { Container, Form, Col, Button } from 'react-bootstrap';
 
-const GoalForm = ({ onNewGoal }) => {
-  const [name, setName] = useState('');
+const GoalForm = ({ onNewGoal, goals }) => {
+  const [goalName, setGoalName] = useState('');
+  const [disableSubmitButton, setDisableSubmitButton] = useState(false);
+  const [goalNameInvalid, setGoalNameInvalid] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    // Trigger an error here if adding a goal with a name that already exists
+    const name = goalName;
     const goal = { name };
     const response = await fetch('/goals/', {
       method: 'POST',
@@ -19,27 +21,59 @@ const GoalForm = ({ onNewGoal }) => {
     });
     if (response.ok) {
       onNewGoal(goal);
-      setName('');
+      setGoalName('');
     }
   };
 
+  const validateGoalName = currentName => {
+    return (
+      goals.filter(
+        ({ name }) => name.toLowerCase() === currentName.toLowerCase()
+      ).length === 0
+    );
+  };
+
+  const handleGoalNameChange = e => {
+    if (validateGoalName(e.target.value)) {
+      setDisableSubmitButton(false);
+      setGoalNameInvalid(false);
+    } else {
+      setDisableSubmitButton(true);
+      setGoalNameInvalid(true);
+    }
+    setGoalName(e.target.value);
+  };
+
   return (
-    <div className="div1">
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          placeholder="Goal name"
-        />
-        <button type="submit">Add New Goal</button>
-      </form>
-    </div>
+    <Container className='goalform-container'>
+      <Form onSubmit={handleSubmit}>
+        <Form.Row>
+          <Col>
+            <Form.Control
+              required
+              type='goalName'
+              value={goalName}
+              onChange={handleGoalNameChange}
+              placeholder='Enter Goal Name'
+            />
+            {goalNameInvalid && (
+              <Form.Row className='goalform-goal-name-error'>
+                * Goal name already exists
+              </Form.Row>
+            )}
+          </Col>
+        </Form.Row>
+        <Button type='submit' disabled={disableSubmitButton}>
+          Add New Goal
+        </Button>
+      </Form>
+    </Container>
   );
 };
 
 export default GoalForm;
 
 GoalForm.propTypes = {
-  onNewGoal: PropTypes.func
+  onNewGoal: PropTypes.func,
+  goals: PropTypes.array
 };
