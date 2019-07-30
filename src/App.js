@@ -32,6 +32,7 @@ function App() {
     setGoals([...goals]);
   };
 
+  console.log(goals);
   return (
     <div>
       <GoalsHeader />

@@ -1,4 +1,8 @@
-.goal-card-header {
+.goal-card-header-uncompleted {
+  padding: 0;
+}
+.goal-card-header-completed {
+  background: rgb(62, 197, 50);
   padding: 0;
 }
 

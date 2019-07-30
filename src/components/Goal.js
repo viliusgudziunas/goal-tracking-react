@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './styles/Goal.css';
 import { Row, Col, Button, Accordion, Card } from 'react-bootstrap';
 import GoalOptions from './GoalOptions';
 
 const Goal = ({ name, target, eventKey, onDeleteGoal }) => {
+  const [goalCompleted, setGoalCompleted] = useState(false);
+
+  const handleGoalCompleteClick = e => {
+    console.log(name);
+  };
+
+  let goalCardHeaderCSS = 'goal-card-header-uncompleted';
+  if (name === 'Working Out') {
+    goalCardHeaderCSS = 'goal-card-header-completed';
+  }
+
+  // const decideStyles = () => {
+  //   return 'goal-card-header';
+  // };
+
   return (
     <Card>
-      <Card.Header className='goal-card-header'>
+      <Card.Header className={goalCardHeaderCSS}>
         <Row>
           <Accordion.Toggle
             as={Col}
@@ -16,9 +31,14 @@ const Goal = ({ name, target, eventKey, onDeleteGoal }) => {
           >
             {name}
           </Accordion.Toggle>
-          <Col>X</Col>
-          <Button variant='success' size='sm' className='goal-done-button'>
-            Done!
+          {/* <Col>X</Col> */}
+          <Button
+            variant='success'
+            size='sm'
+            className='goal-done-button'
+            onClick={handleGoalCompleteClick}
+          >
+            &#10004;
           </Button>
         </Row>
       </Card.Header>
