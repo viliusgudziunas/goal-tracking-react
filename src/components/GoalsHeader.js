@@ -2,7 +2,7 @@ import React from 'react';
 import './styles/GoalsHeader.css';
 import { Row, Col } from 'react-bootstrap';
 
-const GoalOptions = () => {
+const GoalsHeader = () => {
   return (
     <Row className='goals-header'>
       <Col>Goals Tracker</Col>
@@ -10,4 +10,4 @@ const GoalOptions = () => {
   );
 };
 
-export default GoalOptions;
+export default GoalsHeader;

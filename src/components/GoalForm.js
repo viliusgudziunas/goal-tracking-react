@@ -10,6 +10,7 @@ const GoalForm = ({ onNewGoal, goals }) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setDisableSubmitButton(true);
     const name = goalName;
     const goal = { name };
     const response = await fetch('/goals/', {
@@ -23,6 +24,7 @@ const GoalForm = ({ onNewGoal, goals }) => {
       onNewGoal(goal);
       setGoalName('');
     }
+    setDisableSubmitButton(false);
   };
 
   const validateGoalName = currentName => {

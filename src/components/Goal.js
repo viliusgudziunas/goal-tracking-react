@@ -4,11 +4,7 @@ import './styles/Goal.css';
 import { Row, Col, Button, Accordion, Card } from 'react-bootstrap';
 import GoalOptions from './GoalOptions';
 
-const Goal = ({ name, eventKey }) => {
-  const handleClick = e => {
-    e.preventDefault();
-  };
-
+const Goal = ({ name, eventKey, onDeleteGoal }) => {
   return (
     <Card>
       <Card.Header className='goal-card-header'>
@@ -20,18 +16,13 @@ const Goal = ({ name, eventKey }) => {
           >
             {name}
           </Accordion.Toggle>
-          <Button
-            variant='success'
-            size='sm'
-            className='goal-done-button'
-            onClick={handleClick}
-          >
+          <Button variant='success' size='sm' className='goal-done-button'>
             Done!
           </Button>
         </Row>
       </Card.Header>
       <Accordion.Collapse eventKey={eventKey}>
-        <GoalOptions />
+        <GoalOptions name={name} onDeleteGoal={onDeleteGoal} />
       </Accordion.Collapse>
     </Card>
   );
@@ -41,5 +32,6 @@ export default Goal;
 
 Goal.propTypes = {
   name: PropTypes.string,
-  eventKey: PropTypes.number
+  eventKey: PropTypes.number,
+  onDeleteGoal: PropTypes.func
 };

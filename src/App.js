@@ -14,15 +14,20 @@ function App() {
     );
   }, []);
 
-  // console.log(goals);
   const onNewGoal = goal => {
     setGoals(currentGoals => [...currentGoals, goal]);
+  };
+
+  const onDeleteGoal = goal => {
+    const goalToDelete = goals.filter(({ name }) => name === goal)[0];
+    goals.splice(goals.indexOf(goalToDelete), 1);
+    setGoals([...goals]);
   };
 
   return (
     <div>
       <GoalsHeader />
-      <Goals goals={goals} />
+      <Goals goals={goals} onDeleteGoal={onDeleteGoal} />
       <GoalForm onNewGoal={onNewGoal} goals={goals} />
     </div>
   );

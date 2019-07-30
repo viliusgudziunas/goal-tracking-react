@@ -3,104 +3,17 @@
   color: red;
   border: none;
 }
-
 .goalOptions-delete-button:hover {
   background: none;
   color: red;
   text-decoration: underline;
 }
-
 .goalOptions-delete-button:enabled {
   box-shadow: none;
 }
-
-/* .goalOptions-delete-button:visited {
-  color: blue;
-} */
-
-/* .goalOptions-delete-button:active {
-  color: blue;
-  text-decoration: underline;
-} */
-/* .goalOptions-delete-button:checked {
-  color: blue;
-} */
-/* .goalOptions-delete-button:disabled {
-  color: blue;
-} */
-/* .goalOptions-delete-button:empty {
-  color: blue;
-} */
-/* .goalOptions-delete-button:first-child {
-  color: blue;
-} */
-/* .goalOptions-delete-button:first-of-type {
-  color: blue;
-} */
-.goalOptions-delete-button:focus {
-  color: blue;
-  text-decoration: underline;
+.goalOptions-delete-button:active {
+  color: red !important;
+  background-color: white !important;
+  border-color: none !important;
+  box-shadow: none !important;
 }
-/* .goalOptions-delete-button:in-range {
-  color: blue;
-} */
-/* .goalOptions-delete-button:invalid {
-  color: blue;
-} */
-/* .goalOptions-delete-button:last-child {
-  color: blue;
-} */
-/* .goalOptions-delete-button:last-of-type {
-  color: blue;
-} */
-/* .goalOptions-delete-button:link {
-  color: blue;
-} */
-/* .goalOptions-delete-button:only-of-type {
-  color: blue;
-} */
-/* .goalOptions-delete-button:only-child {
-  color: blue;
-} */
-/* .goalOptions-delete-button:optional {
-  color: blue;
-} */
-/* .goalOptions-delete-button:out-of-range {
-  color: blue;
-} */
-/* .goalOptions-delete-button:read-only {
-  color: blue;
-} */
-/* .goalOptions-delete-button:read-write {
-  color: blue;
-} */
-/* .goalOptions-delete-button:required {
-  color: blue;
-} */
-/* .goalOptions-delete-button:target {
-  color: blue;
-  text-decoration: underline;
-} */
-/* .goalOptions-delete-button:valid {
-  color: blue;
-} */
-/* .goalOptions-delete-button:visited {
-  color: blue;
-} */
-.goalOptions-delete-button::after {
-  color: blue;
-  text-decoration: underline;
-}
-.goalOptions-delete-button::before {
-  color: blue;
-  text-decoration: underline;
-}
-/* .goalOptions-delete-button::first-letter {
-  color: blue;
-} */
-/* .goalOptions-delete-button::first-line {
-  color: blue;
-} */
-/* .goalOptions-delete-button::selection {
-  color: blue;
-} */
