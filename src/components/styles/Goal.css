@@ -1,3 +1,14 @@
-.goal-row {
-  margin-top: 1%;
+.goal-card-header {
+  padding: 0;
+}
+
+.goal-card-accordion-toggle {
+  margin-left: 1%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+
+.goal-done-button {
+  margin-right: 15.5px;
+  float: right;
 }

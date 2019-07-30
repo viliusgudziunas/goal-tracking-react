@@ -1,0 +1,19 @@
+.goalOptions-delete-button {
+  background: none;
+  color: red;
+  border: none;
+}
+.goalOptions-delete-button:hover {
+  background: none;
+  color: red;
+  text-decoration: underline;
+}
+.goalOptions-delete-button:enabled {
+  box-shadow: none;
+}
+.goalOptions-delete-button:active {
+  color: red !important;
+  background-color: white !important;
+  border-color: none !important;
+  box-shadow: none !important;
+}

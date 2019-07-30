@@ -1,18 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './styles/Goals.css';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Accordion } from 'react-bootstrap';
 import Goal from './Goal';
 
-const Goals = ({ goals }) => {
+const Goals = ({ goals, onDeleteGoal }) => {
   return (
     <Container>
-      <Row className='goals-header'>
-        <Col>Goal Name</Col>
-      </Row>
-      {goals.map(goal => {
-        return <Goal key={goal.name} name={goal.name} />;
-      })}
+      <Accordion className='goals-accordion'>
+        {goals.map((goal, index) => {
+          return (
+            <Goal
+              key={goal.name}
+              name={goal.name}
+              eventKey={index}
+              onDeleteGoal={onDeleteGoal}
+            />
+          );
+        })}
+      </Accordion>
     </Container>
   );
 };
@@ -20,5 +26,6 @@ const Goals = ({ goals }) => {
 export default Goals;
 
 Goals.propTypes = {
-  goals: PropTypes.array
+  goals: PropTypes.array,
+  onDeleteGoal: PropTypes.func
 };
