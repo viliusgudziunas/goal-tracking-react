@@ -17,3 +17,7 @@
   border-color: none !important;
   box-shadow: none !important;
 }
+.goalOptions-delete-button:disabled {
+  background: none;
+  color: red;
+}
