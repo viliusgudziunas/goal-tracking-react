@@ -13,6 +13,7 @@ const Goals = ({ goals, onDeleteGoal }) => {
             <Goal
               key={goal.name}
               name={goal.name}
+              target={goal.target}
               eventKey={index}
               onDeleteGoal={onDeleteGoal}
             />

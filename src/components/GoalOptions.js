@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './styles/GoalOptions.css';
-import { Card, Button } from 'react-bootstrap';
+import { Container, Card, Button } from 'react-bootstrap';
 
-const GoalOptions = ({ name, onDeleteGoal }) => {
+const GoalOptions = ({ name, target, onDeleteGoal }) => {
   const [disableDeleteButton, setDisableDeleteButton] = useState(false);
 
   const handleDeleteGoal = async () => {
@@ -22,13 +22,18 @@ const GoalOptions = ({ name, onDeleteGoal }) => {
 
   return (
     <Card.Body>
-      <Button
-        className='goalOptions-delete-button'
-        onClick={handleDeleteGoal}
-        disabled={disableDeleteButton}
-      >
-        Delete Goal
-      </Button>
+      <Container className='goalOptions-container1'>
+        Montly target - {target}
+      </Container>
+      <Container className='goalOptions-container2'>
+        <Button
+          className='goalOptions-delete-button'
+          onClick={handleDeleteGoal}
+          disabled={disableDeleteButton}
+        >
+          Delete Goal
+        </Button>
+      </Container>
     </Card.Body>
   );
 };
@@ -37,5 +42,6 @@ export default GoalOptions;
 
 GoalOptions.propTypes = {
   name: PropTypes.string,
+  target: PropTypes.number,
   onDeleteGoal: PropTypes.func
 };

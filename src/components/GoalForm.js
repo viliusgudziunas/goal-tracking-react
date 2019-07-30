@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import './styles/GoalForm.css';
 import { Container, Form, Col, Button } from 'react-bootstrap';
 
-const GoalForm = ({ onNewGoal, goals }) => {
+const GoalForm = ({ onNewGoal, validateGoalName }) => {
   const [goalName, setGoalName] = useState('');
+  const [goalTarget, setGoalTarget] = useState('');
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
   const [goalNameInvalid, setGoalNameInvalid] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
     setDisableSubmitButton(true);
-    const name = goalName;
-    const goal = { name };
+    const goal = { name: goalName, target: goalTarget };
     const response = await fetch('/goals/', {
       method: 'POST',
       headers: {
@@ -23,16 +23,9 @@ const GoalForm = ({ onNewGoal, goals }) => {
     if (response.ok) {
       onNewGoal(goal);
       setGoalName('');
+      setGoalTarget('');
     }
     setDisableSubmitButton(false);
-  };
-
-  const validateGoalName = currentName => {
-    return (
-      goals.filter(
-        ({ name }) => name.toLowerCase() === currentName.toLowerCase()
-      ).length === 0
-    );
   };
 
   const handleGoalNameChange = e => {
@@ -64,6 +57,15 @@ const GoalForm = ({ onNewGoal, goals }) => {
               </Form.Row>
             )}
           </Col>
+          <Col>
+            <Form.Control
+              required
+              type='goalTarget'
+              value={goalTarget}
+              onChange={e => setGoalTarget(e.target.value)}
+              placeholder='Enter Target'
+            />
+          </Col>
         </Form.Row>
         <Button type='submit' disabled={disableSubmitButton}>
           Add New Goal
@@ -77,5 +79,5 @@ export default GoalForm;
 
 GoalForm.propTypes = {
   onNewGoal: PropTypes.func,
-  goals: PropTypes.array
+  validateGoalName: PropTypes.func
 };

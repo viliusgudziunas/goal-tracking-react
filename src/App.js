@@ -18,6 +18,14 @@ function App() {
     setGoals(currentGoals => [...currentGoals, goal]);
   };
 
+  const validateGoalName = currentName => {
+    return (
+      goals.filter(
+        ({ name }) => name.toLowerCase() === currentName.toLowerCase()
+      ).length === 0
+    );
+  };
+
   const onDeleteGoal = goal => {
     const goalToDelete = goals.filter(({ name }) => name === goal)[0];
     goals.splice(goals.indexOf(goalToDelete), 1);
@@ -28,7 +36,7 @@ function App() {
     <div>
       <GoalsHeader />
       <Goals goals={goals} onDeleteGoal={onDeleteGoal} />
-      <GoalForm onNewGoal={onNewGoal} goals={goals} />
+      <GoalForm onNewGoal={onNewGoal} validateGoalName={validateGoalName} />
     </div>
   );
 }
