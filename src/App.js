@@ -5,6 +5,7 @@ import GoalsHeader from './components/GoalsHeader';
 
 function App() {
   const [goals, setGoals] = useState([]);
+  const [nextGoalID, setNextGoalID] = useState(0);
 
   useEffect(() => {
     fetch('/users/1').then(res =>
@@ -15,7 +16,14 @@ function App() {
   }, []);
 
   const onNewGoal = goal => {
-    setGoals(currentGoals => [...currentGoals, goal]);
+    const maxID = Math.max(
+      ...(goals.map(o => {
+        return o.id;
+      }) + 1)
+    );
+    const newGoal = goal;
+    newGoal.id = maxID;
+    setGoals(currentGoals => [...currentGoals, newGoal]);
   };
 
   const validateGoalName = currentName => {
@@ -32,7 +40,6 @@ function App() {
     setGoals([...goals]);
   };
 
-  console.log(goals);
   return (
     <div>
       <GoalsHeader />

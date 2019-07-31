@@ -42,6 +42,6 @@ export default GoalOptions;
 
 GoalOptions.propTypes = {
   name: PropTypes.string,
-  target: PropTypes.number,
+  target: PropTypes.string,
   onDeleteGoal: PropTypes.func
 };

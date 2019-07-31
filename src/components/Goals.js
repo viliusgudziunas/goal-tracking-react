@@ -11,9 +11,8 @@ const Goals = ({ goals, onDeleteGoal }) => {
         {goals.map((goal, index) => {
           return (
             <Goal
-              key={goal.name}
-              name={goal.name}
-              target={goal.target}
+              key={goal.id}
+              goal={goal}
               eventKey={index}
               onDeleteGoal={onDeleteGoal}
             />
