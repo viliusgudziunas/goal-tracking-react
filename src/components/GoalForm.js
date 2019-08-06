@@ -32,6 +32,10 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
   const handleGoalNameChange = e => {
     if (e.target.value === '') {
       setGoalName(e.target.value);
+      setGoalNameInvalid(false);
+      if (!goalTargetInvalid) {
+        setDisableSubmitButton(false);
+      }
     } else {
       if (!validateGoalName(e.target.value)) {
         setDisableSubmitButton(true);
@@ -52,11 +56,18 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
   const handleGoalTargetChange = e => {
     if (e.target.value === '') {
       setGoalTarget(e.target.value);
+      setGoalTargetInvalid(false);
+      if (!goalNameInvalid) {
+        setDisableSubmitButton(false);
+      }
     } else {
       if (isNaN(e.target.value)) {
         setDisableSubmitButton(true);
         setGoalTargetInvalid(true);
       } else if (!Number.isInteger(Number(e.target.value))) {
+        setDisableSubmitButton(true);
+        setGoalTargetInvalid(true);
+      } else if (e.target.value < 1) {
         setDisableSubmitButton(true);
         setGoalTargetInvalid(true);
       } else {
@@ -103,7 +114,7 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
             {goalTargetInvalid && (
               <Container>
                 <Form.Row className='goalform-goal-target-error'>
-                  * Goal target must be a full number
+                  * Goal target must be a full number greater than 0
                 </Form.Row>
               </Container>
             )}
