@@ -1,21 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './styles/Goal.css';
 import { Row, Col, Button, Accordion, Card } from 'react-bootstrap';
 import GoalOptions from './GoalOptions';
 
-const Goal = ({ goal, eventKey, onDeleteGoal }) => {
-  const [goalInstances, setGoalInstances] = useState(goal.instances);
-  const [goalCompleted, setGoalCompleted] = useState(false);
-
+const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
   let goalCardHeaderCSS = 'goal-card-header-uncompleted';
   if (goal.name === 'Working Out') {
     goalCardHeaderCSS = 'goal-card-header-completed';
   }
 
   const handleGoalCompleteClick = async () => {
-    console.log(goalInstances);
-    console.log(goal.name);
     const goalInstance = { goal_id: goal.id };
     const response = await fetch(`/new_goal_instance`, {
       method: 'POST',
@@ -25,12 +20,7 @@ const Goal = ({ goal, eventKey, onDeleteGoal }) => {
       body: JSON.stringify(goalInstance)
     });
     if (response.ok) {
-      const currentTimestamp = new Date();
-      setGoalInstances(currentGoalInstances => [
-        ...currentGoalInstances,
-        { goal_id: goal.id, timestamp: currentTimestamp }
-      ]);
-      goalCardHeaderCSS = 'goal-card-header-completed';
+      onCompleteGoal(goal);
     }
   };
 
@@ -74,7 +64,20 @@ const Goal = ({ goal, eventKey, onDeleteGoal }) => {
 export default Goal;
 
 Goal.propTypes = {
-  goal: PropTypes.object,
-  eventKey: PropTypes.number,
-  onDeleteGoal: PropTypes.func
+  goal: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    target: PropTypes.number.isRequired,
+    timestamp: PropTypes.string.isRequired,
+    instances: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        goal_id: PropTypes.number.isRequired,
+        timestamp: PropTypes.string.isRequired
+      })
+    ).isRequired
+  }).isRequired,
+  eventKey: PropTypes.number.isRequired,
+  onDeleteGoal: PropTypes.func.isRequired,
+  onCompleteGoal: PropTypes.func.isRequired
 };

@@ -5,7 +5,6 @@ import GoalsHeader from './components/GoalsHeader';
 
 function App() {
   const [goals, setGoals] = useState([]);
-  const [nextGoalID, setNextGoalID] = useState(0);
 
   useEffect(() => {
     fetch('/users/1').then(res =>
@@ -16,20 +15,26 @@ function App() {
   }, []);
 
   const onNewGoal = goal => {
-    const maxID = Math.max(
-      ...(goals.map(o => {
+    const currentMaxID = Math.max(
+      ...goals.map(o => {
         return o.id;
-      }) + 1)
+      })
     );
+    let maxID = 1;
+    if (currentMaxID > 0) {
+      maxID = currentMaxID + 1;
+    }
     const newGoal = goal;
     newGoal.id = maxID;
+    newGoal.timestamp = `${new Date()}`;
+    newGoal.instances = [];
     setGoals(currentGoals => [...currentGoals, newGoal]);
   };
 
   const validateGoalName = currentName => {
     return (
       goals.filter(
-        ({ name }) => name.toLowerCase() === currentName.toLowerCase()
+        ({ name }) => name.toLowerCase() === currentName.toLowerCase().trim()
       ).length === 0
     );
   };
@@ -40,10 +45,41 @@ function App() {
     setGoals([...goals]);
   };
 
+  const onCompleteGoal = goal => {
+    const currentMaxID = Math.max(
+      ...goal.instances.map(o => {
+        return o.id;
+      })
+    );
+    let maxID = 1;
+    if (currentMaxID > 0) {
+      maxID = currentMaxID + 1;
+    }
+    const newInstance = {
+      goal_id: goal.id,
+      id: maxID,
+      timestamp: String(new Date())
+    };
+    const updatedGoal = {
+      id: goal.id,
+      name: goal.name,
+      target: goal.target,
+      timestamp: goal.timestamp,
+      instances: [...goal.instances, newInstance]
+    };
+    const goalToDelete = goals.filter(({ id }) => id === goal.id)[0];
+    goals.splice(goals.indexOf(goalToDelete), 1, updatedGoal);
+    setGoals([...goals]);
+  };
+
   return (
     <div>
       <GoalsHeader />
-      <Goals goals={goals} onDeleteGoal={onDeleteGoal} />
+      <Goals
+        goals={goals}
+        onDeleteGoal={onDeleteGoal}
+        onCompleteGoal={onCompleteGoal}
+      />
       <GoalForm onNewGoal={onNewGoal} validateGoalName={validateGoalName} />
     </div>
   );

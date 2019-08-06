@@ -12,7 +12,7 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     setDisableSubmitButton(true);
-    const goal = { name: goalName, target: goalTarget };
+    const goal = { name: goalName.trim(), target: Number(goalTarget) };
     const response = await fetch('/goals/', {
       method: 'POST',
       headers: {
@@ -78,6 +78,6 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
 export default GoalForm;
 
 GoalForm.propTypes = {
-  onNewGoal: PropTypes.func,
-  validateGoalName: PropTypes.func
+  onNewGoal: PropTypes.func.isRequired,
+  validateGoalName: PropTypes.func.isRequired
 };

@@ -41,7 +41,7 @@ const GoalOptions = ({ name, target, onDeleteGoal }) => {
 export default GoalOptions;
 
 GoalOptions.propTypes = {
-  name: PropTypes.string,
-  target: PropTypes.string,
-  onDeleteGoal: PropTypes.func
+  name: PropTypes.string.isRequired,
+  target: PropTypes.number.isRequired,
+  onDeleteGoal: PropTypes.func.isRequired
 };
