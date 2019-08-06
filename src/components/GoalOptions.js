@@ -24,7 +24,7 @@ const GoalOptions = ({ name, target, onDeleteGoal }) => {
   return (
     <Card.Body>
       <Container className='goalOptions-container1'>
-        Montly target - {target}
+        Weekly target - {target}
       </Container>
       <Container className='goalOptions-container2'>
         <Button

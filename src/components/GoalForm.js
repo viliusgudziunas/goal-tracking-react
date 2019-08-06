@@ -8,6 +8,7 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
   const [goalTarget, setGoalTarget] = useState('');
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
   const [goalNameInvalid, setGoalNameInvalid] = useState(false);
+  const [goalTargetInvalid, setGoalTargetInvalid] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -29,14 +30,43 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
   };
 
   const handleGoalNameChange = e => {
-    if (validateGoalName(e.target.value)) {
-      setDisableSubmitButton(false);
-      setGoalNameInvalid(false);
+    if (e.target.value === '') {
+      setGoalName(e.target.value);
     } else {
-      setDisableSubmitButton(true);
-      setGoalNameInvalid(true);
+      if (!validateGoalName(e.target.value)) {
+        setDisableSubmitButton(true);
+        setGoalNameInvalid(true);
+      } else if (Number.isInteger(Number(e.target.value))) {
+        setDisableSubmitButton(true);
+        setGoalNameInvalid(true);
+      } else {
+        if (!goalTargetInvalid) {
+          setDisableSubmitButton(false);
+        }
+        setGoalNameInvalid(false);
+      }
+      setGoalName(e.target.value);
     }
-    setGoalName(e.target.value);
+  };
+
+  const handleGoalTargetChange = e => {
+    if (e.target.value === '') {
+      setGoalTarget(e.target.value);
+    } else {
+      if (isNaN(e.target.value)) {
+        setDisableSubmitButton(true);
+        setGoalTargetInvalid(true);
+      } else if (!Number.isInteger(Number(e.target.value))) {
+        setDisableSubmitButton(true);
+        setGoalTargetInvalid(true);
+      } else {
+        if (!goalNameInvalid) {
+          setDisableSubmitButton(false);
+        }
+        setGoalTargetInvalid(false);
+      }
+      setGoalTarget(e.target.value);
+    }
   };
 
   return (
@@ -52,9 +82,14 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
               placeholder='Enter Goal Name'
             />
             {goalNameInvalid && (
-              <Form.Row className='goalform-goal-name-error'>
-                * Goal name already exists
-              </Form.Row>
+              <Container>
+                <Form.Row className='goalform-goal-name-error'>
+                  * Goal names must be unique
+                </Form.Row>
+                <Form.Row className='goalform-goal-name-error'>
+                  * Goal names must be words
+                </Form.Row>
+              </Container>
             )}
           </Col>
           <Col>
@@ -62,9 +97,16 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
               required
               type='goalTarget'
               value={goalTarget}
-              onChange={e => setGoalTarget(e.target.value)}
-              placeholder='Enter Target'
+              onChange={handleGoalTargetChange}
+              placeholder='Enter Weekly Target'
             />
+            {goalTargetInvalid && (
+              <Container>
+                <Form.Row className='goalform-goal-target-error'>
+                  * Goal target must be a full number
+                </Form.Row>
+              </Container>
+            )}
           </Col>
         </Form.Row>
         <Button type='submit' disabled={disableSubmitButton}>
