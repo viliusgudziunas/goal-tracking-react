@@ -6,17 +6,18 @@ import { Container, Card, Button } from 'react-bootstrap';
 const GoalOptions = ({ name, target, onDeleteGoal }) => {
   const [disableDeleteButton, setDisableDeleteButton] = useState(false);
 
-  const handleDeleteGoal = async () => {
+  const handleDeleteGoal = () => {
     setDisableDeleteButton(true);
-    const response = await fetch(`/goals/delete-goal/${name}`, {
+    fetch(`/goals/delete-goal/${name}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       }
+    }).then(res => {
+      if (res.ok) {
+        onDeleteGoal(name);
+      }
     });
-    if (response.ok) {
-      onDeleteGoal(name);
-    }
     setDisableDeleteButton(false);
   };
 

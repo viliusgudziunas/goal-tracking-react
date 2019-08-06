@@ -39,22 +39,22 @@ const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
     return true;
   };
 
-  const handleGoalCompleteClick = async () => {
+  const handleGoalCompleteClick = () => {
     const goalInstance = { goal_id: goal.id };
-    const response = await fetch(`/new_goal_instance`, {
+    fetch(`/new_goal_instance`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(goalInstance)
+    }).then(res => {
+      if (res.ok) {
+        onCompleteGoal(goal);
+      }
     });
-    if (response.ok) {
-      onCompleteGoal(goal);
-    }
   };
 
   useEffect(() => {
-    // console.log(goal);
     if (checkDate(goal.instances)) {
       setGoalCardHeaderCSS('goal-card-header-completed');
       setGoalCompleteButtonDisabled(true);
