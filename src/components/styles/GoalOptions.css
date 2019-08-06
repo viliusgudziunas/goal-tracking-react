@@ -2,6 +2,7 @@
   background: none;
   color: red;
   border: none;
+  padding: 0;
 }
 .goalOptions-delete-button:hover {
   background: none;
@@ -16,4 +17,17 @@
   background-color: white !important;
   border-color: none !important;
   box-shadow: none !important;
+}
+.goalOptions-delete-button:disabled {
+  background: none;
+  color: red;
+}
+
+.goalOptions-container1 {
+  padding-bottom: 1%;
+}
+
+.goalOptions-container2 {
+  border-top: 1px solid black;
+  padding-top: 1%;
 }
