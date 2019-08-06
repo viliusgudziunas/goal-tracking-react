@@ -1,14 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './styles/Goal.css';
 import { Row, Col, Button, Accordion, Card } from 'react-bootstrap';
 import GoalOptions from './GoalOptions';
 
 const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
-  let goalCardHeaderCSS = 'goal-card-header-uncompleted';
-  if (goal.name === 'Working Out') {
-    goalCardHeaderCSS = 'goal-card-header-completed';
-  }
+  const [goalCardHeaderCSS, setGoalCardHeaderCSS] = useState(
+    'goal-card-header-completed'
+  );
+  const [goalCompleteButtonDisabled, setGoalCompleteButtonDisabled] = useState(
+    false
+  );
+
+  const checkDate = instances => {
+    if (typeof instances === 'undefined') {
+      return undefined;
+    }
+    if (instances.length === 0) {
+      return false;
+    }
+    const maxDate = new Date(
+      Math.max(
+        ...instances.map(o => {
+          return new Date(o.timestamp);
+        })
+      )
+    );
+    const currentDate = new Date();
+    if (currentDate.getFullYear() > maxDate.getFullYear()) {
+      return false;
+    }
+    if (currentDate.getMonth() > maxDate.getMonth()) {
+      return false;
+    }
+    if (currentDate.getDate() > maxDate.getDate()) {
+      return false;
+    }
+    return true;
+  };
 
   const handleGoalCompleteClick = async () => {
     const goalInstance = { goal_id: goal.id };
@@ -24,9 +53,16 @@ const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
     }
   };
 
-  // const decideStyles = () => {
-  //   return 'goal-card-header';
-  // };
+  useEffect(() => {
+    // console.log(goal);
+    if (checkDate(goal.instances)) {
+      setGoalCardHeaderCSS('goal-card-header-completed');
+      setGoalCompleteButtonDisabled(true);
+    } else if (checkDate(goal.instances) === false) {
+      setGoalCardHeaderCSS('goal-card-header-uncompleted');
+      setGoalCompleteButtonDisabled(false);
+    }
+  }, [goal.instances]);
 
   return (
     <Card>
@@ -45,6 +81,7 @@ const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
             size='sm'
             className='goal-done-button'
             onClick={handleGoalCompleteClick}
+            disabled={goalCompleteButtonDisabled}
           >
             &#10004;
           </Button>
