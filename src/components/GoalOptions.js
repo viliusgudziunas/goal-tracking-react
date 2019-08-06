@@ -1,39 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './styles/GoalOptions.css';
-import { Container, Card, Button } from 'react-bootstrap';
+import { Container, Card, Button, Row } from 'react-bootstrap';
 
-const GoalOptions = ({ name, target, onDeleteGoal }) => {
+const GoalOptions = ({ goal, onDeleteGoal }) => {
   const [disableDeleteButton, setDisableDeleteButton] = useState(false);
+  const [completedGoalsThisWeek, setCompletedGoalsThisWeek] = useState(0);
 
   const handleDeleteGoal = () => {
     setDisableDeleteButton(true);
-    fetch(`/goals/delete-goal/${name}`, {
+    fetch(`/goals/delete-goal/${goal.name}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       }
     }).then(res => {
       if (res.ok) {
-        onDeleteGoal(name);
+        onDeleteGoal(goal.name);
       }
     });
     setDisableDeleteButton(false);
   };
 
+  useEffect(() => {
+    console.log(goal.instances);
+  }, [goal]);
+
   return (
     <Card.Body>
       <Container className='goalOptions-container1'>
-        Weekly target - {target}
+        <Row>Weekly target - {goal.target}</Row>
+        <Row>
+          You completed this goal {completedGoalsThisWeek} amount of times this
+          week
+        </Row>
       </Container>
       <Container className='goalOptions-container2'>
-        <Button
-          className='goalOptions-delete-button'
-          onClick={handleDeleteGoal}
-          disabled={disableDeleteButton}
-        >
-          Delete Goal
-        </Button>
+        <Row>
+          <Button
+            className='goalOptions-delete-button'
+            onClick={handleDeleteGoal}
+            disabled={disableDeleteButton}
+          >
+            Delete Goal
+          </Button>
+        </Row>
       </Container>
     </Card.Body>
   );
@@ -42,7 +53,18 @@ const GoalOptions = ({ name, target, onDeleteGoal }) => {
 export default GoalOptions;
 
 GoalOptions.propTypes = {
-  name: PropTypes.string.isRequired,
-  target: PropTypes.number.isRequired,
+  goal: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    target: PropTypes.number.isRequired,
+    timestamp: PropTypes.string.isRequired,
+    instances: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        goal_id: PropTypes.number.isRequired,
+        timestamp: PropTypes.string.isRequired
+      })
+    ).isRequired
+  }).isRequired,
   onDeleteGoal: PropTypes.func.isRequired
 };

@@ -14,14 +14,14 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
     e.preventDefault();
     setDisableSubmitButton(true);
     const goal = { name: goalName.trim(), target: Number(goalTarget) };
-    const response = await fetch('/goals/', {
+    const res = await fetch('/goals/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(goal)
     });
-    if (response.ok) {
+    if (res.ok) {
       onNewGoal(goal);
       setGoalName('');
       setGoalTarget('');
