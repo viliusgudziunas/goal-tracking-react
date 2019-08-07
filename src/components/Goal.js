@@ -40,21 +40,21 @@ const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
   };
 
   const handleGoalCompleteClick = async () => {
+    setGoalCompleteButtonDisabled(true);
     const goalInstance = { goal_id: goal.id };
-    const response = await fetch(`/new_goal_instance`, {
+    const res = await fetch(`/new_goal_instance`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(goalInstance)
     });
-    if (response.ok) {
+    if (res.ok) {
       onCompleteGoal(goal);
     }
   };
 
   useEffect(() => {
-    // console.log(goal);
     if (checkDate(goal.instances)) {
       setGoalCardHeaderCSS('goal-card-header-completed');
       setGoalCompleteButtonDisabled(true);
@@ -88,11 +88,7 @@ const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
         </Row>
       </Card.Header>
       <Accordion.Collapse eventKey={eventKey}>
-        <GoalOptions
-          name={goal.name}
-          target={goal.target}
-          onDeleteGoal={onDeleteGoal}
-        />
+        <GoalOptions goal={goal} onDeleteGoal={onDeleteGoal} />
       </Accordion.Collapse>
     </Card>
   );
