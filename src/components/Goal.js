@@ -4,7 +4,13 @@ import './styles/Goal.css';
 import { Row, Col, Button, Accordion, Card } from 'react-bootstrap';
 import GoalOptions from './GoalOptions';
 
-const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
+const Goal = ({
+  goal,
+  eventKey,
+  onDeleteGoal,
+  onCompleteGoal,
+  onChangeTarget
+}) => {
   const [goalCardHeaderCSS, setGoalCardHeaderCSS] = useState(
     'goal-card-header-completed'
   );
@@ -88,7 +94,11 @@ const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
         </Row>
       </Card.Header>
       <Accordion.Collapse eventKey={eventKey}>
-        <GoalOptions goal={goal} onDeleteGoal={onDeleteGoal} />
+        <GoalOptions
+          goal={goal}
+          onDeleteGoal={onDeleteGoal}
+          onChangeTarget={onChangeTarget}
+        />
       </Accordion.Collapse>
     </Card>
   );
@@ -112,5 +122,6 @@ Goal.propTypes = {
   }).isRequired,
   eventKey: PropTypes.number.isRequired,
   onDeleteGoal: PropTypes.func.isRequired,
-  onCompleteGoal: PropTypes.func.isRequired
+  onCompleteGoal: PropTypes.func.isRequired,
+  onChangeTarget: PropTypes.func.isRequired
 };

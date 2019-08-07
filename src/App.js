@@ -14,33 +14,12 @@ function App() {
     );
   }, []);
 
-  const onNewGoal = goal => {
-    const currentMaxID = Math.max(
-      ...goals.map(o => {
-        return o.id;
-      })
-    );
-    let maxID = 1;
-    if (currentMaxID > 0) {
-      maxID = currentMaxID + 1;
-    }
-    const newGoal = goal;
-    newGoal.id = maxID;
-    newGoal.timestamp = `${new Date()}`;
-    newGoal.instances = [];
-    setGoals(currentGoals => [...currentGoals, newGoal]);
+  const onNewGoal = newGoal => {
+    setGoals([...goals, newGoal]);
   };
 
-  const validateGoalName = currentName => {
-    return (
-      goals.filter(
-        ({ name }) => name.toLowerCase() === currentName.toLowerCase().trim()
-      ).length === 0
-    );
-  };
-
-  const onDeleteGoal = goal => {
-    const goalToDelete = goals.filter(({ name }) => name === goal)[0];
+  const onDeleteGoal = goalID => {
+    const goalToDelete = goals.filter(({ id }) => id === goalID)[0];
     goals.splice(goals.indexOf(goalToDelete), 1);
     setGoals([...goals]);
   };
@@ -72,6 +51,19 @@ function App() {
     setGoals([...goals]);
   };
 
+  const onChangeTarget = updatedGoal => {
+    goals.splice(goals.indexOf(updatedGoal), 1, updatedGoal);
+    setGoals([...goals]);
+  };
+
+  const validateGoalName = currentName => {
+    return (
+      goals.filter(
+        ({ name }) => name.toLowerCase() === currentName.toLowerCase().trim()
+      ).length === 0
+    );
+  };
+
   return (
     <div>
       <GoalsHeader />
@@ -79,6 +71,7 @@ function App() {
         goals={goals}
         onDeleteGoal={onDeleteGoal}
         onCompleteGoal={onCompleteGoal}
+        onChangeTarget={onChangeTarget}
       />
       <GoalForm onNewGoal={onNewGoal} validateGoalName={validateGoalName} />
     </div>

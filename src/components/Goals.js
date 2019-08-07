@@ -4,7 +4,7 @@ import './styles/Goals.css';
 import { Container, Accordion } from 'react-bootstrap';
 import Goal from './Goal';
 
-const Goals = ({ goals, onDeleteGoal, onCompleteGoal }) => {
+const Goals = ({ goals, onDeleteGoal, onCompleteGoal, onChangeTarget }) => {
   return (
     <Container>
       <Accordion className='goals-accordion'>
@@ -16,6 +16,7 @@ const Goals = ({ goals, onDeleteGoal, onCompleteGoal }) => {
               eventKey={index}
               onDeleteGoal={onDeleteGoal}
               onCompleteGoal={onCompleteGoal}
+              onChangeTarget={onChangeTarget}
             />
           );
         })}
@@ -43,5 +44,6 @@ Goals.propTypes = {
     })
   ).isRequired,
   onDeleteGoal: PropTypes.func.isRequired,
-  onCompleteGoal: PropTypes.func.isRequired
+  onCompleteGoal: PropTypes.func.isRequired,
+  onChangeTarget: PropTypes.func.isRequired
 };

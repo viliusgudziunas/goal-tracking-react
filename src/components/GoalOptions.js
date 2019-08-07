@@ -3,24 +3,12 @@ import PropTypes from 'prop-types';
 import './styles/GoalOptions.css';
 import { Container, Card, Button, Row } from 'react-bootstrap';
 
-const GoalOptions = ({ goal, onDeleteGoal }) => {
+const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
   const [disableDeleteButton, setDisableDeleteButton] = useState(false);
+  const [disableChangeTargetButton, setDisableChangeTargetButton] = useState(
+    false
+  );
   const [completedGoalsThisWeek, setCompletedGoalsThisWeek] = useState(0);
-
-  const handleDeleteGoal = () => {
-    setDisableDeleteButton(true);
-    fetch(`/goals/delete-goal/${goal.name}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => {
-      if (res.ok) {
-        onDeleteGoal(goal.name);
-      }
-    });
-    setDisableDeleteButton(false);
-  };
 
   const countInstancesThisWeek = timestamp => {
     const lastMonday = new Date();
@@ -38,6 +26,38 @@ const GoalOptions = ({ goal, onDeleteGoal }) => {
     setCompletedGoalsThisWeek(goalInstancesThisWeek);
   }, [goal]);
 
+  const handleDeleteGoal = () => {
+    setDisableDeleteButton(true);
+    fetch(`/goals/delete-goal/${goal.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      if (res.ok) {
+        onDeleteGoal(goal.id);
+      }
+    });
+    setDisableDeleteButton(false);
+  };
+
+  const handleChangeTarget = () => {
+    setDisableChangeTargetButton(true);
+    const newTarget = { goal_id: goal.id, target: 15 };
+    fetch(`/goals/change-goal-target/${goal.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newTarget)
+    }).then(res => {
+      res.json().then(response => {
+        onChangeTarget(response);
+      });
+    });
+    setDisableChangeTargetButton(false);
+  };
+
   return (
     <Card.Body>
       <Container className='goalOptions-container1'>
@@ -46,6 +66,15 @@ const GoalOptions = ({ goal, onDeleteGoal }) => {
         </Row>
       </Container>
       <Container className='goalOptions-container2'>
+        <Row>
+          <Button
+            className='goalOptions-change-target-button'
+            onClick={handleChangeTarget}
+            disabled={disableChangeTargetButton}
+          >
+            Change Target
+          </Button>
+        </Row>
         <Row>
           <Button
             className='goalOptions-delete-button'
@@ -76,5 +105,6 @@ GoalOptions.propTypes = {
       })
     ).isRequired
   }).isRequired,
-  onDeleteGoal: PropTypes.func.isRequired
+  onDeleteGoal: PropTypes.func.isRequired,
+  onChangeTarget: PropTypes.func.isRequired
 };
