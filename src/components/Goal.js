@@ -48,16 +48,17 @@ const Goal = ({
   const handleGoalCompleteClick = async () => {
     setGoalCompleteButtonDisabled(true);
     const goalInstance = { goal_id: goal.id };
-    const res = await fetch(`/new_goal_instance`, {
+    await fetch(`/goals/new-goal-instance`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(goalInstance)
+    }).then(res => {
+      res.json().then(response => {
+        onCompleteGoal(response);
+      });
     });
-    if (res.ok) {
-      onCompleteGoal(goal);
-    }
   };
 
   useEffect(() => {

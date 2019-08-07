@@ -26,17 +26,17 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
     setCompletedGoalsThisWeek(goalInstancesThisWeek);
   }, [goal]);
 
-  const handleDeleteGoal = () => {
+  const handleDeleteGoal = async () => {
     setDisableDeleteButton(true);
-    fetch(`/goals/delete-goal/${goal.id}`, {
+    await fetch(`/goals/delete-goal/${goal.id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       }
     }).then(res => {
-      if (res.ok) {
-        onDeleteGoal(goal.id);
-      }
+      res.json().then(response => {
+        onDeleteGoal(response);
+      });
     });
     setDisableDeleteButton(false);
   };
