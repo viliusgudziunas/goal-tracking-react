@@ -4,6 +4,7 @@
   "rules": {
     "func-names": "off",
     "no-unused-vars": "warn",
+    "no-restricted-globals": "off",
     "prettier/prettier": "error",
     "react/jsx-filename-extension": "off",
     "react/require-default-props": "off",

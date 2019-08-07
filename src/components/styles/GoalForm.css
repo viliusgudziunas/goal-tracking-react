@@ -5,6 +5,7 @@
   padding: 2%;
 }
 
-.goalform-goal-name-error {
+.goalform-goal-name-error,
+.goalform-goal-target-error {
   color: red;
 }
