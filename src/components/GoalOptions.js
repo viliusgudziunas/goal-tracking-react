@@ -22,17 +22,27 @@ const GoalOptions = ({ goal, onDeleteGoal }) => {
     setDisableDeleteButton(false);
   };
 
+  const countInstancesThisWeek = timestamp => {
+    const lastMonday = new Date();
+    lastMonday.setHours(0, 0, 0, 0);
+    while (lastMonday.getDay() !== 1) {
+      lastMonday.setDate(lastMonday.getDate() - 1);
+    }
+    return lastMonday < new Date(timestamp);
+  };
+
   useEffect(() => {
-    console.log(goal.instances);
+    const goalInstancesThisWeek = goal.instances.filter(({ timestamp }) =>
+      countInstancesThisWeek(timestamp)
+    ).length;
+    setCompletedGoalsThisWeek(goalInstancesThisWeek);
   }, [goal]);
 
   return (
     <Card.Body>
       <Container className='goalOptions-container1'>
-        <Row>Weekly target - {goal.target}</Row>
         <Row>
-          You completed this goal {completedGoalsThisWeek} amount of times this
-          week
+          Weekly Progress: {completedGoalsThisWeek}/{goal.target}
         </Row>
       </Container>
       <Container className='goalOptions-container2'>
