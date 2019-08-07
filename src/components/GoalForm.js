@@ -119,6 +119,15 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
               </Container>
             )}
           </Col>
+          <Col>
+            <Form.Control
+              required
+              type='goalTarget'
+              value={goalTarget}
+              onChange={e => setGoalTarget(e.target.value)}
+              placeholder='Enter Target'
+            />
+          </Col>
         </Form.Row>
         <Button type='submit' disabled={disableSubmitButton}>
           Add New Goal
