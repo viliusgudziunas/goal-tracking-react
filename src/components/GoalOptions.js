@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Card, Button, Row, Form, Col } from 'react-bootstrap';
+import { Container, Card, Button, Row } from 'react-bootstrap';
 import './styles/GoalOptions.css';
 import PropTypes from 'prop-types';
 import goalService from './services/goalService';
