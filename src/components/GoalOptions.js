@@ -3,6 +3,7 @@ import { Container, Card, Button, Row, Form, Col } from 'react-bootstrap';
 import './styles/GoalOptions.css';
 import PropTypes from 'prop-types';
 import goalService from './services/goalService';
+import ChangeTargetForm from './ChangeTargetForm';
 
 const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
   const [completedGoalsThisWeek, setCompletedGoalsThisWeek] = useState(0);
@@ -42,48 +43,7 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
     setChangeTargetButtonDisabled(true);
     setChangeTargetFormDisplayed(true);
   };
-
-  const [newGoalTarget, setNewGoalTarget] = useState('');
-  const [newGoalTargetInvalid, setNewGoalTargetInvalid] = useState(false);
-  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
-
-  useEffect(() => {
-    if (
-      newGoalTarget === '' ||
-      (Number.isInteger(Number(newGoalTarget)) &&
-        newGoalTarget > 0 &&
-        Number(newGoalTarget) !== goal.target)
-    ) {
-      setNewGoalTargetInvalid(false);
-      setSubmitButtonDisabled(false);
-    } else {
-      setNewGoalTargetInvalid(true);
-      setSubmitButtonDisabled(true);
-    }
-  }, [newGoalTarget, goal.target]);
-
-  const handleFormSubmit = async e => {
-    e.preventDefault();
-    await fetch(`/goals/change-goal-target/${goal.id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ goal_id: goal.id, target: newGoalTarget })
-    }).then(res => {
-      res.json().then(response => {
-        onChangeTarget(response);
-        setNewGoalTarget('');
-      });
-    });
-    setChangeTargetFormDisplayed(false);
-    setChangeTargetButtonDisabled(false);
-  };
-
-  const handleGoalTargetChangeBack = () => {
-    setNewGoalTarget('');
-    setNewGoalTargetInvalid(false);
-    setSubmitButtonDisabled(false);
+  const hideChangeTargetForm = () => {
     setChangeTargetFormDisplayed(false);
     setChangeTargetButtonDisabled(false);
   };
@@ -96,39 +56,11 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
         </Row>
       </Container>
       {changeTargetFormDisplayed && (
-        <Container className='goalOptions-container2'>
-          <Form onSubmit={handleFormSubmit}>
-            <Form.Row>
-              <Col>
-                <Form.Control
-                  required
-                  type='goalTarget'
-                  value={newGoalTarget}
-                  onChange={e => setNewGoalTarget(e.target.value)}
-                  placeholder='Enter New Goal Target'
-                />
-                {newGoalTargetInvalid && (
-                  <Form.Row className='goaloptions-change-goal-target-error'>
-                    * Goal target must be a full number greater than 0
-                  </Form.Row>
-                )}
-              </Col>
-              <Col sm='true'>
-                <Button type='submit' disabled={submitButtonDisabled}>
-                  Change Target
-                </Button>
-              </Col>
-              <Col sm='true'>
-                <Button
-                  variant='secondary'
-                  onClick={handleGoalTargetChangeBack}
-                >
-                  Back
-                </Button>
-              </Col>
-            </Form.Row>
-          </Form>
-        </Container>
+        <ChangeTargetForm
+          goal={goal}
+          onChangeTarget={onChangeTarget}
+          hideChangeTargetForm={hideChangeTargetForm}
+        />
       )}
       {!changeTargetFormDisplayed && (
         <Container className='goalOptions-container3'>
