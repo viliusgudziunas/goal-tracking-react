@@ -48,6 +48,22 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
     setChangeTargetButtonDisabled(false);
   };
 
+  const countInstancesThisWeek = timestamp => {
+    const lastMonday = new Date();
+    lastMonday.setHours(0, 0, 0, 0);
+    while (lastMonday.getDay() !== 1) {
+      lastMonday.setDate(lastMonday.getDate() - 1);
+    }
+    return lastMonday < new Date(timestamp);
+  };
+
+  useEffect(() => {
+    const goalInstancesThisWeek = goal.instances.filter(({ timestamp }) =>
+      countInstancesThisWeek(timestamp)
+    ).length;
+    setCompletedGoalsThisWeek(goalInstancesThisWeek);
+  }, [goal]);
+
   return (
     <Card.Body>
       <Container className='goalOptions-container1'>
