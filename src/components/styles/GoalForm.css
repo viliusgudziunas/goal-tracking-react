@@ -8,4 +8,5 @@
 .goalform-goal-name-error,
 .goalform-goal-target-error {
   color: red;
+  text-align: left;
 }

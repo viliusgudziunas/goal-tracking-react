@@ -1,84 +1,67 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import './styles/GoalForm.css';
+import React, { useState, useEffect } from 'react';
 import { Container, Form, Col, Button } from 'react-bootstrap';
+import './styles/GoalForm.css';
+import PropTypes from 'prop-types';
+import validationService from './services/validationService';
 
-const GoalForm = ({ onNewGoal, validateGoalName }) => {
+const GoalForm = ({ onNewGoal, validateNewGoalName }) => {
   const [goalName, setGoalName] = useState('');
   const [goalTarget, setGoalTarget] = useState('');
-  const [disableSubmitButton, setDisableSubmitButton] = useState(false);
-  const [goalNameInvalid, setGoalNameInvalid] = useState(false);
-  const [goalTargetInvalid, setGoalTargetInvalid] = useState(false);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setDisableSubmitButton(true);
-    const goal = { name: goalName.trim(), target: Number(goalTarget) };
-    const res = await fetch('/goals/', {
+    setSubmitButtonDisabled(true);
+    await fetch('/goals/new-goal', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(goal)
+      body: JSON.stringify({
+        name: goalName.trim(),
+        target: Number(goalTarget)
+      })
+    }).then(res => {
+      res.json().then(response => {
+        onNewGoal(response);
+        setGoalName('');
+        setGoalTarget('');
+      });
     });
-    if (res.ok) {
-      onNewGoal(goal);
-      setGoalName('');
-      setGoalTarget('');
-    }
-    setDisableSubmitButton(false);
+    setSubmitButtonDisabled(false);
   };
 
-  const handleGoalNameChange = e => {
-    if (e.target.value === '') {
-      setGoalName(e.target.value);
+  const [goalNameInvalid, setGoalNameInvalid] = useState(false);
+  const [goalTargetInvalid, setGoalTargetInvalid] = useState(false);
+
+  useEffect(() => {
+    if (
+      goalName === '' ||
+      (validateNewGoalName(goalName) &&
+        !validationService.checkForNumbers(goalName))
+    ) {
       setGoalNameInvalid(false);
-      if (!goalTargetInvalid) {
-        setDisableSubmitButton(false);
-      }
+      if (!goalTargetInvalid) setSubmitButtonDisabled(false);
     } else {
-      if (!validateGoalName(e.target.value)) {
-        setDisableSubmitButton(true);
-        setGoalNameInvalid(true);
-      } else if (Number.isInteger(Number(e.target.value))) {
-        setDisableSubmitButton(true);
-        setGoalNameInvalid(true);
-      } else {
-        if (!goalTargetInvalid) {
-          setDisableSubmitButton(false);
-        }
-        setGoalNameInvalid(false);
-      }
-      setGoalName(e.target.value);
+      setGoalNameInvalid(true);
+      setSubmitButtonDisabled(true);
     }
-  };
+  }, [goalName, goalTargetInvalid, validateNewGoalName]);
 
-  const handleGoalTargetChange = e => {
-    if (e.target.value === '') {
-      setGoalTarget(e.target.value);
+  useEffect(() => {
+    if (
+      goalTarget === '' ||
+      (!isNaN(goalTarget) &&
+        Number.isInteger(Number(goalTarget)) &&
+        goalTarget > 0)
+    ) {
       setGoalTargetInvalid(false);
-      if (!goalNameInvalid) {
-        setDisableSubmitButton(false);
-      }
+      if (!goalNameInvalid) setSubmitButtonDisabled(false);
     } else {
-      if (isNaN(e.target.value)) {
-        setDisableSubmitButton(true);
-        setGoalTargetInvalid(true);
-      } else if (!Number.isInteger(Number(e.target.value))) {
-        setDisableSubmitButton(true);
-        setGoalTargetInvalid(true);
-      } else if (e.target.value < 1) {
-        setDisableSubmitButton(true);
-        setGoalTargetInvalid(true);
-      } else {
-        if (!goalNameInvalid) {
-          setDisableSubmitButton(false);
-        }
-        setGoalTargetInvalid(false);
-      }
-      setGoalTarget(e.target.value);
+      setGoalTargetInvalid(true);
+      setSubmitButtonDisabled(true);
     }
-  };
+  }, [goalTarget, goalNameInvalid]);
 
   return (
     <Container className='goalform-container'>
@@ -89,7 +72,7 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
               required
               type='goalName'
               value={goalName}
-              onChange={handleGoalNameChange}
+              onChange={e => setGoalName(e.target.value)}
               placeholder='Enter Goal Name'
             />
             {goalNameInvalid && (
@@ -108,7 +91,7 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
               required
               type='goalTarget'
               value={goalTarget}
-              onChange={handleGoalTargetChange}
+              onChange={e => setGoalTarget(e.target.value)}
               placeholder='Enter Weekly Target'
             />
             {goalTargetInvalid && (
@@ -119,17 +102,8 @@ const GoalForm = ({ onNewGoal, validateGoalName }) => {
               </Container>
             )}
           </Col>
-          <Col>
-            <Form.Control
-              required
-              type='goalTarget'
-              value={goalTarget}
-              onChange={e => setGoalTarget(e.target.value)}
-              placeholder='Enter Target'
-            />
-          </Col>
         </Form.Row>
-        <Button type='submit' disabled={disableSubmitButton}>
+        <Button type='submit' disabled={submitButtonDisabled}>
           Add New Goal
         </Button>
       </Form>
@@ -141,5 +115,5 @@ export default GoalForm;
 
 GoalForm.propTypes = {
   onNewGoal: PropTypes.func.isRequired,
-  validateGoalName: PropTypes.func.isRequired
+  validateNewGoalName: PropTypes.func.isRequired
 };

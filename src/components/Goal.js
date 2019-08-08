@@ -1,64 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import './styles/Goal.css';
 import { Row, Col, Button, Accordion, Card } from 'react-bootstrap';
+import './styles/Goal.css';
+import PropTypes from 'prop-types';
 import GoalOptions from './GoalOptions';
+import goalService from './services/goalService';
 
-const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
-  const [goalCardHeaderCSS, setGoalCardHeaderCSS] = useState(
-    'goal-card-header-completed'
-  );
+const Goal = ({
+  goal,
+  eventKey,
+  onDeleteGoal,
+  onCompleteGoal,
+  onChangeTarget
+}) => {
   const [goalCompleteButtonDisabled, setGoalCompleteButtonDisabled] = useState(
     false
   );
 
-  const checkDate = instances => {
-    if (typeof instances === 'undefined') {
-      return undefined;
-    }
-    if (instances.length === 0) {
-      return false;
-    }
-    const maxDate = new Date(
-      Math.max(
-        ...instances.map(o => {
-          return new Date(o.timestamp);
-        })
-      )
-    );
-    const currentDate = new Date();
-    if (currentDate.getFullYear() > maxDate.getFullYear()) {
-      return false;
-    }
-    if (currentDate.getMonth() > maxDate.getMonth()) {
-      return false;
-    }
-    if (currentDate.getDate() > maxDate.getDate()) {
-      return false;
-    }
-    return true;
-  };
-
   const handleGoalCompleteClick = async () => {
     setGoalCompleteButtonDisabled(true);
-    const goalInstance = { goal_id: goal.id };
-    const res = await fetch(`/new_goal_instance`, {
+    await fetch(`/goals/new-goal-instance`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(goalInstance)
+      body: JSON.stringify({ goal_id: goal.id })
+    }).then(res => {
+      res.json().then(response => {
+        onCompleteGoal(response);
+      });
     });
-    if (res.ok) {
-      onCompleteGoal(goal);
-    }
   };
 
+  const [goalCardHeaderCSS, setGoalCardHeaderCSS] = useState('');
+
   useEffect(() => {
-    if (checkDate(goal.instances)) {
+    if (goalService.checkGoalCompleteToday(goal.instances)) {
       setGoalCardHeaderCSS('goal-card-header-completed');
       setGoalCompleteButtonDisabled(true);
-    } else if (checkDate(goal.instances) === false) {
+    } else if (goalService.checkGoalCompleteToday(goal.instances) === false) {
       setGoalCardHeaderCSS('goal-card-header-uncompleted');
       setGoalCompleteButtonDisabled(false);
     }
@@ -75,7 +54,6 @@ const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
           >
             {goal.name}
           </Accordion.Toggle>
-          {/* <Col>X</Col> */}
           <Button
             variant='success'
             size='sm'
@@ -88,7 +66,11 @@ const Goal = ({ goal, eventKey, onDeleteGoal, onCompleteGoal }) => {
         </Row>
       </Card.Header>
       <Accordion.Collapse eventKey={eventKey}>
-        <GoalOptions goal={goal} onDeleteGoal={onDeleteGoal} />
+        <GoalOptions
+          goal={goal}
+          onDeleteGoal={onDeleteGoal}
+          onChangeTarget={onChangeTarget}
+        />
       </Accordion.Collapse>
     </Card>
   );
@@ -112,5 +94,6 @@ Goal.propTypes = {
   }).isRequired,
   eventKey: PropTypes.number.isRequired,
   onDeleteGoal: PropTypes.func.isRequired,
-  onCompleteGoal: PropTypes.func.isRequired
+  onCompleteGoal: PropTypes.func.isRequired,
+  onChangeTarget: PropTypes.func.isRequired
 };

@@ -1,6 +1,6 @@
 {
   "extends": ["airbnb", "prettier"],
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "react-hooks"],
   "rules": {
     "func-names": "off",
     "no-unused-vars": "warn",
@@ -9,7 +9,9 @@
     "react/jsx-filename-extension": "off",
     "react/require-default-props": "off",
     "react/forbid-prop-types": "off",
-    "react/jsx-one-expression-per-line": "off"
+    "react/jsx-one-expression-per-line": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
   "globals": {
     "fetch": true,

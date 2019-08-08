@@ -1,25 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import './styles/GoalOptions.css';
 import { Container, Card, Button, Row } from 'react-bootstrap';
+import './styles/GoalOptions.css';
+import PropTypes from 'prop-types';
+import goalService from './services/goalService';
+import ChangeTargetForm from './ChangeTargetForm';
 
-const GoalOptions = ({ goal, onDeleteGoal }) => {
-  const [disableDeleteButton, setDisableDeleteButton] = useState(false);
+const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
   const [completedGoalsThisWeek, setCompletedGoalsThisWeek] = useState(0);
 
-  const handleDeleteGoal = () => {
-    setDisableDeleteButton(true);
-    fetch(`/goals/delete-goal/${goal.name}`, {
+  useEffect(() => {
+    const goalInstancesThisWeek = goal.instances.filter(({ timestamp }) =>
+      goalService.countGoalInstancesThisWeek(timestamp)
+    ).length;
+    setCompletedGoalsThisWeek(goalInstancesThisWeek);
+  }, [goal]);
+
+  const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
+
+  const handleDeleteGoal = async () => {
+    setDeleteButtonDisabled(true);
+    await fetch(`/goals/delete-goal/${goal.id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       }
     }).then(res => {
-      if (res.ok) {
-        onDeleteGoal(goal.name);
-      }
+      res.json().then(response => {
+        onDeleteGoal(response);
+      });
     });
-    setDisableDeleteButton(false);
+    setDeleteButtonDisabled(false);
+  };
+
+  const [changeTargetButtonDisabled, setChangeTargetButtonDisabled] = useState(
+    false
+  );
+  const [changeTargetFormDisplayed, setChangeTargetFormDisplayed] = useState(
+    false
+  );
+
+  const handleChangeTargetButtonClick = () => {
+    setChangeTargetButtonDisabled(true);
+    setChangeTargetFormDisplayed(true);
+  };
+  const hideChangeTargetForm = () => {
+    setChangeTargetFormDisplayed(false);
+    setChangeTargetButtonDisabled(false);
   };
 
   const countInstancesThisWeek = timestamp => {
@@ -45,17 +71,35 @@ const GoalOptions = ({ goal, onDeleteGoal }) => {
           Weekly Progress: {completedGoalsThisWeek}/{goal.target}
         </Row>
       </Container>
-      <Container className='goalOptions-container2'>
-        <Row>
-          <Button
-            className='goalOptions-delete-button'
-            onClick={handleDeleteGoal}
-            disabled={disableDeleteButton}
-          >
-            Delete Goal
-          </Button>
-        </Row>
-      </Container>
+      {changeTargetFormDisplayed && (
+        <ChangeTargetForm
+          goal={goal}
+          onChangeTarget={onChangeTarget}
+          hideChangeTargetForm={hideChangeTargetForm}
+        />
+      )}
+      {!changeTargetFormDisplayed && (
+        <Container className='goalOptions-container3'>
+          <Row>
+            <Button
+              className='goalOptions-change-target-button'
+              onClick={handleChangeTargetButtonClick}
+              disabled={changeTargetButtonDisabled}
+            >
+              Change Target
+            </Button>
+          </Row>
+          <Row>
+            <Button
+              className='goalOptions-delete-button'
+              onClick={handleDeleteGoal}
+              disabled={deleteButtonDisabled}
+            >
+              Delete Goal
+            </Button>
+          </Row>
+        </Container>
+      )}
     </Card.Body>
   );
 };
@@ -76,5 +120,6 @@ GoalOptions.propTypes = {
       })
     ).isRequired
   }).isRequired,
-  onDeleteGoal: PropTypes.func.isRequired
+  onDeleteGoal: PropTypes.func.isRequired,
+  onChangeTarget: PropTypes.func.isRequired
 };
