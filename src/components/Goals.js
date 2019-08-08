@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import './styles/Goals.css';
 import { Container, Accordion } from 'react-bootstrap';
+import './styles/Goals.css';
+import PropTypes from 'prop-types';
 import Goal from './Goal';
 
 const Goals = ({ goals, onDeleteGoal, onCompleteGoal, onChangeTarget }) => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Goals from './components/Goals';
 import GoalForm from './components/GoalForm';
 import GoalsHeader from './components/GoalsHeader';
+import validationService from './components/services/validationService';
 
 function App() {
   const [goals, setGoals] = useState([]);
@@ -24,12 +25,8 @@ function App() {
     setGoals([...goals]);
   };
 
-  const validateGoalName = currentName => {
-    return (
-      goals.filter(
-        ({ name }) => name.toLowerCase() === currentName.toLowerCase().trim()
-      ).length === 0
-    );
+  const validateNewGoalName = newGoalName => {
+    return validationService.goalNameValidation(goals, newGoalName);
   };
 
   return (
@@ -43,7 +40,7 @@ function App() {
       />
       <GoalForm
         onNewGoal={newGoal => setGoals([...goals, newGoal])}
-        validateGoalName={validateGoalName}
+        validateNewGoalName={validateNewGoalName}
       />
     </div>
   );

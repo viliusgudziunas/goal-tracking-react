@@ -66,3 +66,8 @@
 .goalOptions-change-target-button:disabled:hover {
   text-decoration: none;
 }
+
+.goaloptions-change-goal-target-error {
+  color: red;
+  text-align: left;
+}
