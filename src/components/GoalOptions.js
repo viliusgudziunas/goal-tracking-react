@@ -11,6 +11,11 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
   const [completedGoalsThisWeek, setCompletedGoalsThisWeek] = useState(0);
   const [displayChangeTargetForm, setDisplayChangeTargetForm] = useState(false);
   const [newGoalTarget, setNewGoalTarget] = useState('');
+  const [newGoalTargetInvalid, setNewGoalTargetInvalid] = useState(false);
+  const [
+    disableSubmitChangeTargetButton,
+    setDisableSubmitChangeTargetButton
+  ] = useState(false);
 
   const countInstancesThisWeek = timestamp => {
     const lastMonday = new Date();
@@ -46,42 +51,60 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
   const handleChangeTargetButtonClick = () => {
     setDisableChangeTargetButton(true);
     setDisplayChangeTargetForm(true);
-    // const newTarget = { goal_id: goal.id, target: 15 };
-    // fetch(`/goals/change-goal-target/${goal.id}`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(newTarget)
-    // }).then(res => {
-    //   res.json().then(response => {
-    //     onChangeTarget(response);
-    //   });
-    // });
-    // setDisableChangeTargetButton(false);
   };
 
   const handleGoalTargetChange = e => {
     if (e.target.value === '') {
       setNewGoalTarget(e.target.value);
-      console.log('Goal target empty');
+      setNewGoalTargetInvalid(false);
+      setDisableSubmitChangeTargetButton(false);
     } else {
       if (isNaN(e.target.value)) {
-        console.log('Not a number');
+        setNewGoalTargetInvalid(true);
+        setDisableSubmitChangeTargetButton(true);
       } else if (!Number.isInteger(Number(e.target.value))) {
-        console.log('Not an integer');
+        setNewGoalTargetInvalid(true);
+        setDisableSubmitChangeTargetButton(true);
       } else if (e.target.value < 1) {
-        console.log('Smaller than 1');
+        setNewGoalTargetInvalid(true);
+        setDisableSubmitChangeTargetButton(true);
       } else if (Number(e.target.value) === goal.target) {
-        console.log('Same value as current target');
+        setNewGoalTargetInvalid(true);
+        setDisableSubmitChangeTargetButton(true);
       } else {
-        console.log('Goal target valid');
+        setNewGoalTargetInvalid(false);
+        setDisableSubmitChangeTargetButton(false);
       }
       setNewGoalTarget(e.target.value);
     }
   };
 
-  const handleChangeTargetFormSubmit = () => {};
+  const handleFormSubmit = async e => {
+    e.preventDefault();
+    const newTarget = { goal_id: goal.id, target: newGoalTarget };
+    await fetch(`/goals/change-goal-target/${goal.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newTarget)
+    }).then(res => {
+      res.json().then(response => {
+        onChangeTarget(response);
+        setNewGoalTarget('');
+      });
+    });
+    setDisplayChangeTargetForm(false);
+    setDisableChangeTargetButton(false);
+  };
+
+  const handleGoalTargetChangeBack = () => {
+    setNewGoalTarget('');
+    setNewGoalTargetInvalid(false);
+    setDisableSubmitChangeTargetButton(false);
+    setDisplayChangeTargetForm(false);
+    setDisableChangeTargetButton(false);
+  };
 
   return (
     <Card.Body>
@@ -92,9 +115,9 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
       </Container>
       {displayChangeTargetForm && (
         <Container className='goalOptions-container2'>
-          <Form onSubmit={handleChangeTargetFormSubmit}>
+          <Form onSubmit={handleFormSubmit}>
             <Form.Row>
-              <Col md='auto'>
+              <Col sm='true'>
                 <Form.Control
                   required
                   type='goalTarget'
@@ -103,11 +126,21 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
                   placeholder='Enter New Goal Target'
                 />
               </Col>
-              <Col md='auto'>
-                <Button type='submit'>Change Target</Button>
+              <Col sm='true'>
+                <Button
+                  type='submit'
+                  disabled={disableSubmitChangeTargetButton}
+                >
+                  Change Target
+                </Button>
               </Col>
-              <Col md='auto'>
-                <Button variant='secondary'>Back</Button>
+              <Col sm='true'>
+                <Button
+                  variant='secondary'
+                  onClick={handleGoalTargetChangeBack}
+                >
+                  Back
+                </Button>
               </Col>
             </Form.Row>
           </Form>
