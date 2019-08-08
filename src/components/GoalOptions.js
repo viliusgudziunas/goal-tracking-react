@@ -117,7 +117,7 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
         <Container className='goalOptions-container2'>
           <Form onSubmit={handleFormSubmit}>
             <Form.Row>
-              <Col sm='true'>
+              <Col>
                 <Form.Control
                   required
                   type='goalTarget'
@@ -125,6 +125,11 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
                   onChange={handleGoalTargetChange}
                   placeholder='Enter New Goal Target'
                 />
+                {newGoalTargetInvalid && (
+                  <Form.Row className='goalform-goal-target-error'>
+                    * Goal target must be a full number greater than 0
+                  </Form.Row>
+                )}
               </Col>
               <Col sm='true'>
                 <Button
