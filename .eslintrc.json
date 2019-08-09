@@ -1,6 +1,6 @@
 {
-  "extends": ["airbnb", "prettier"],
-  "plugins": ["prettier", "react-hooks"],
+  "extends": ["airbnb", "prettier", "plugin:jest/recommended"],
+  "plugins": ["prettier", "react-hooks", "jest"],
   "rules": {
     "func-names": "off",
     "no-unused-vars": "warn",
@@ -11,7 +11,8 @@
     "react/forbid-prop-types": "off",
     "react/jsx-one-expression-per-line": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "jest/no-focused-tests": "warn"
   },
   "globals": {
     "fetch": true,
