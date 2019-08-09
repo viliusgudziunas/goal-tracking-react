@@ -60,9 +60,17 @@ const ChangeTargetForm = ({ goal, onChangeTarget, hideChangeTargetForm }) => {
               placeholder='Enter New Goal Target'
             />
             {newGoalTargetInvalid && (
-              <Form.Row className='goaloptions-change-goal-target-error'>
-                * Goal target must be a full number greater than 0
-              </Form.Row>
+              <Container>
+                <Form.Row className='goaloptions-change-goal-target-error'>
+                  * Target must be different
+                </Form.Row>
+                <Form.Row className='goaloptions-change-goal-target-error'>
+                  * Target must be a full number
+                </Form.Row>
+                <Form.Row className='goaloptions-change-goal-target-error'>
+                  * Target must be greater than 0
+                </Form.Row>
+              </Container>
             )}
           </Col>
           <Col sm='true'>
