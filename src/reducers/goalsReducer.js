@@ -7,10 +7,14 @@ const initialState = {
 const goalsReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case FETCH_GOALS:
-    case NEW_GOAL:
       return {
         ...state,
         items: payload
+      };
+    case NEW_GOAL:
+      return {
+        ...state,
+        items: [...state.items, payload]
       };
     default:
       return state;
