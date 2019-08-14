@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchGoalsAction } from './actions/goalActions';
 import Goals from './components/Goals';
 import GoalForm from './components/GoalForm';
 import GoalsHeader from './components/GoalsHeader';
@@ -6,14 +8,12 @@ import validationService from './components/services/validationService';
 
 function App() {
   const [goals, setGoals] = useState([]);
+  const temp = useSelector(state => state.goals.items);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch('/users/1').then(res =>
-      res.json().then(data => {
-        setGoals(data);
-      })
-    );
-  }, []);
+    dispatch(fetchGoalsAction());
+  }, [dispatch]);
 
   const onCompleteGoal = updatedGoal => {
     goals.splice(goals.indexOf(updatedGoal), 1, updatedGoal);
@@ -33,7 +33,7 @@ function App() {
     <div>
       <GoalsHeader />
       <Goals
-        goals={goals}
+        goals={temp}
         onDeleteGoal={updatedGoals => setGoals([...updatedGoals])}
         onCompleteGoal={onCompleteGoal}
         onChangeTarget={onChangeTarget}
