@@ -1,4 +1,10 @@
-import { FETCH_GOALS, NEW_GOAL, COMPLETE_GOAL, DELETE_GOAL } from './types';
+import {
+  FETCH_GOALS,
+  NEW_GOAL,
+  COMPLETE_GOAL,
+  DELETE_GOAL,
+  CHANGE_GOAL_TARGET
+} from './types';
 
 export const fetchGoalsAction = () => dispatch => {
   fetch('/users/1').then(res =>
@@ -56,6 +62,23 @@ export const deleteGoalAction = goalData => dispatch => {
       dispatch({
         type: DELETE_GOAL,
         payload: goals
+      })
+    )
+  );
+};
+
+export const changeGoalTargetAction = (goalData, newGoalTarget) => dispatch => {
+  fetch(`/goals/change-goal-target/${goalData.id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ goal_id: goalData.id, target: newGoalTarget })
+  }).then(res =>
+    res.json().then(goal =>
+      dispatch({
+        type: CHANGE_GOAL_TARGET,
+        payload: { oldGoal: goalData, newGoal: goal }
       })
     )
   );

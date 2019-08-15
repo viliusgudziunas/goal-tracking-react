@@ -1,4 +1,4 @@
-const checkGoalCompleteToday = instances => {
+export const goalCompletedService = instances => {
   if (instances.length === 0) return false;
   const maxDate = new Date(
     Math.max(
@@ -18,7 +18,7 @@ const checkGoalCompleteToday = instances => {
   return true;
 };
 
-const countGoalInstancesThisWeek = timestamp => {
+export const countGoalInstancesService = timestamp => {
   const lastMonday = new Date();
   lastMonday.setHours(0, 0, 0, 0);
   while (lastMonday.getDay() !== 1) {
@@ -26,10 +26,3 @@ const countGoalInstancesThisWeek = timestamp => {
   }
   return lastMonday < new Date(timestamp);
 };
-
-const goalService = {
-  checkGoalCompleteToday,
-  countGoalInstancesThisWeek
-};
-
-export default goalService;

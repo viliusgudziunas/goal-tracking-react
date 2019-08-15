@@ -4,16 +4,16 @@ import { useDispatch } from 'react-redux';
 import './styles/GoalOptions.css';
 import PropTypes from 'prop-types';
 import { deleteGoalAction } from '../actions/goalActions';
-import goalService from './services/goalService';
+import { countGoalInstancesService } from '../services/goalService';
 import ChangeTargetForm from './ChangeTargetForm';
 
-const GoalOptions = ({ goal, onChangeTarget }) => {
+const GoalOptions = ({ goal }) => {
   const dispatch = useDispatch();
   const [completedGoalsThisWeek, setCompletedGoalsThisWeek] = useState(0);
 
   useEffect(() => {
     const goalInstancesThisWeek = goal.instances.filter(({ timestamp }) =>
-      goalService.countGoalInstancesThisWeek(timestamp)
+      countGoalInstancesService(timestamp)
     ).length;
     setCompletedGoalsThisWeek(goalInstancesThisWeek);
   }, [goal]);
@@ -63,7 +63,6 @@ const GoalOptions = ({ goal, onChangeTarget }) => {
       {changeTargetFormDisplayed && (
         <ChangeTargetForm
           goal={goal}
-          onChangeTarget={onChangeTarget}
           hideChangeTargetForm={hideChangeTargetForm}
         />
       )}
@@ -108,6 +107,5 @@ GoalOptions.propTypes = {
         timestamp: PropTypes.string.isRequired
       })
     ).isRequired
-  }).isRequired,
-  onChangeTarget: PropTypes.func.isRequired
+  }).isRequired
 };

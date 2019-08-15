@@ -2,7 +2,8 @@ import {
   FETCH_GOALS,
   NEW_GOAL,
   COMPLETE_GOAL,
-  DELETE_GOAL
+  DELETE_GOAL,
+  CHANGE_GOAL_TARGET
 } from '../actions/types';
 
 const initialState = {
@@ -22,6 +23,7 @@ const goalsReducer = (state = initialState, { type, payload }) => {
         items: [...state.items, payload]
       };
     case COMPLETE_GOAL:
+    case CHANGE_GOAL_TARGET:
       state.items.splice(
         state.items.indexOf(payload.oldGoal),
         1,

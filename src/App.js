@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { Container } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { fetchGoalsAction } from './actions/goalActions';
 import Goals from './components/Goals';
@@ -6,24 +7,18 @@ import GoalForm from './components/GoalForm';
 import GoalsHeader from './components/GoalsHeader';
 
 function App() {
-  const [goals, setGoals] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchGoalsAction());
   }, [dispatch]);
 
-  const onChangeTarget = updatedGoal => {
-    goals.splice(goals.indexOf(updatedGoal), 1, updatedGoal);
-    setGoals([...goals]);
-  };
-
   return (
-    <div>
+    <Container>
       <GoalsHeader />
-      <Goals onChangeTarget={onChangeTarget} />
+      <Goals />
       <GoalForm />
-    </div>
+    </Container>
   );
 }
 

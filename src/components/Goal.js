@@ -5,9 +5,9 @@ import './styles/Goal.css';
 import PropTypes from 'prop-types';
 import { completeGoalAction } from '../actions/goalActions';
 import GoalOptions from './GoalOptions';
-import goalService from './services/goalService';
+import { goalCompletedService } from '../services/goalService';
 
-const Goal = ({ goal, onChangeTarget }) => {
+const Goal = ({ goal }) => {
   const dispatch = useDispatch();
   const [goalCardHeaderCSS, setGoalCardHeaderCSS] = useState('');
   const [goalCompleteButtonDisabled, setGoalCompleteButtonDisabled] = useState(
@@ -15,10 +15,10 @@ const Goal = ({ goal, onChangeTarget }) => {
   );
 
   useEffect(() => {
-    if (goalService.checkGoalCompleteToday(goal.instances)) {
+    if (goalCompletedService(goal.instances)) {
       setGoalCardHeaderCSS('goal-card-header-completed');
       setGoalCompleteButtonDisabled(true);
-    } else if (goalService.checkGoalCompleteToday(goal.instances) === false) {
+    } else {
       setGoalCardHeaderCSS('goal-card-header-uncompleted');
       setGoalCompleteButtonDisabled(false);
     }
@@ -47,7 +47,7 @@ const Goal = ({ goal, onChangeTarget }) => {
         </Row>
       </Card.Header>
       <Accordion.Collapse eventKey={goal.id}>
-        <GoalOptions goal={goal} onChangeTarget={onChangeTarget} />
+        <GoalOptions goal={goal} />
       </Accordion.Collapse>
     </Card>
   );
@@ -68,6 +68,5 @@ Goal.propTypes = {
         timestamp: PropTypes.string.isRequired
       })
     ).isRequired
-  }).isRequired,
-  onChangeTarget: PropTypes.func.isRequired
+  }).isRequired
 };

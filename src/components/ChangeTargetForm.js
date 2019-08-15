@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Form, Col } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import { changeGoalTargetAction } from '../actions/goalActions';
 
 const ChangeTargetForm = ({ goal, onChangeTarget, hideChangeTargetForm }) => {
+  const dispatch = useDispatch();
   const [newGoalTarget, setNewGoalTarget] = useState('');
 
   const handleFormSubmit = async e => {
     e.preventDefault();
-    await fetch(`/goals/change-goal-target/${goal.id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ goal_id: goal.id, target: newGoalTarget })
-    }).then(res => {
-      res.json().then(response => {
-        onChangeTarget(response);
-        setNewGoalTarget('');
-      });
-    });
+    dispatch(changeGoalTargetAction(goal, newGoalTarget));
+    // await fetch(`/goals/change-goal-target/${goal.id}`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({ goal_id: goal.id, target: newGoalTarget })
+    // }).then(res => {
+    //   res.json().then(response => {
+    //     onChangeTarget(response);
+    //     setNewGoalTarget('');
+    //   });
+    // });
+    setNewGoalTarget('');
     hideChangeTargetForm();
   };
 
