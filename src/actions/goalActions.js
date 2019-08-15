@@ -1,4 +1,4 @@
-import { FETCH_GOALS, NEW_GOAL } from './types';
+import { FETCH_GOALS, NEW_GOAL, COMPLETE_GOAL } from './types';
 
 export const fetchGoalsAction = () => dispatch => {
   fetch('/users/1').then(res =>
@@ -22,6 +22,23 @@ export const addNewGoalAction = goalData => dispatch => {
     res.json().then(goal =>
       dispatch({
         type: NEW_GOAL,
+        payload: goal
+      })
+    )
+  );
+};
+
+export const completeGoalAction = goalData => dispatch => {
+  fetch('/goals/new-goal-instance', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(goalData)
+  }).then(res =>
+    res.json().then(goal =>
+      dispatch({
+        type: COMPLETE_GOAL,
         payload: goal
       })
     )

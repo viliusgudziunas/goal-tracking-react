@@ -1,34 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Accordion, Card } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
 import './styles/Goal.css';
 import PropTypes from 'prop-types';
+import { completeGoalAction } from '../actions/goalActions';
 import GoalOptions from './GoalOptions';
 import goalService from './services/goalService';
 
-const Goal = ({
-  goal,
-  eventKey,
-  onDeleteGoal,
-  onCompleteGoal,
-  onChangeTarget
-}) => {
+const Goal = ({ goal, onDeleteGoal, onCompleteGoal, onChangeTarget }) => {
+  const dispatch = useDispatch();
   const [goalCompleteButtonDisabled, setGoalCompleteButtonDisabled] = useState(
     false
   );
 
-  const handleGoalCompleteClick = async () => {
+  const handleGoalCompleteClick = () => {
     setGoalCompleteButtonDisabled(true);
-    await fetch(`/goals/new-goal-instance`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ goal_id: goal.id })
-    }).then(res => {
-      res.json().then(response => {
-        onCompleteGoal(response);
-      });
-    });
+    dispatch(completeGoalAction({ goal_id: goal.id }));
+    // await fetch(`/goals/new-goal-instance`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({ goal_id: goal.id })
+    // }).then(res => {
+    //   res.json().then(response => {
+    //     onCompleteGoal(response);
+    //   });
+    // });
   };
 
   const [goalCardHeaderCSS, setGoalCardHeaderCSS] = useState('');
@@ -49,7 +47,7 @@ const Goal = ({
         <Row>
           <Accordion.Toggle
             as={Col}
-            eventKey={eventKey}
+            eventKey={goal.id}
             className='goal-card-accordion-toggle'
           >
             {goal.name}
@@ -65,7 +63,7 @@ const Goal = ({
           </Button>
         </Row>
       </Card.Header>
-      <Accordion.Collapse eventKey={eventKey}>
+      <Accordion.Collapse eventKey={goal.id}>
         <GoalOptions
           goal={goal}
           onDeleteGoal={onDeleteGoal}
@@ -92,7 +90,6 @@ Goal.propTypes = {
       })
     ).isRequired
   }).isRequired,
-  eventKey: PropTypes.number.isRequired,
   onDeleteGoal: PropTypes.func.isRequired,
   onCompleteGoal: PropTypes.func.isRequired,
   onChangeTarget: PropTypes.func.isRequired

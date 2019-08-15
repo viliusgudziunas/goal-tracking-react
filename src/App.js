@@ -28,7 +28,6 @@ function App() {
     <div>
       <GoalsHeader />
       <Goals
-        goals={tempGoals}
         onDeleteGoal={updatedGoals => setGoals([...updatedGoals])}
         onCompleteGoal={onCompleteGoal}
         onChangeTarget={onChangeTarget}
