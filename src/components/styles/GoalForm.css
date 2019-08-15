@@ -3,9 +3,3 @@
   border-top: 1px solid black;
   padding: 2%;
 }
-
-.goalform-goal-name-error,
-.goalform-goal-target-error {
-  color: red;
-  text-align: left;
-}

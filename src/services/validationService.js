@@ -1,18 +1,22 @@
-export const goalNameValidationService = (goals, newGoalName) => {
+export const goalNameValidationService = (goals, goalName) => {
   return (
-    goals.filter(
-      ({ name }) => name.toLowerCase() === newGoalName.toLowerCase().trim()
+    goalName === '' ||
+    (goals.filter(
+      ({ name }) => name.toLowerCase() === goalName.toLowerCase().trim()
     ).length === 0 &&
-    !newGoalName
-      .replace(/ /g, '')
-      .split('')
-      .map(o => isNaN(o))
-      .includes(false)
+      !goalName
+        .replace(/ /g, '')
+        .split('')
+        .map(o => isNaN(o))
+        .includes(false))
   );
 };
 
 export const goalTargetValidationService = goalTarget => {
   return (
-    !isNaN(goalTarget) && Number.isInteger(Number(goalTarget)) && goalTarget > 0
+    goalTarget === '' ||
+    (!isNaN(goalTarget) &&
+      Number.isInteger(Number(goalTarget)) &&
+      goalTarget > 0)
   );
 };

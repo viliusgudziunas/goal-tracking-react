@@ -3,26 +3,16 @@ import { Container, Button, Form, Col } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeGoalTargetAction } from '../actions/goalActions';
+import { goalTargetValidationService } from '../services/validationService';
+import FormError from './FormError';
 
-const ChangeTargetForm = ({ goal, onChangeTarget, hideChangeTargetForm }) => {
+const ChangeTargetForm = ({ goal, hideChangeTargetForm }) => {
   const dispatch = useDispatch();
   const [newGoalTarget, setNewGoalTarget] = useState('');
 
   const handleFormSubmit = async e => {
     e.preventDefault();
     dispatch(changeGoalTargetAction(goal, newGoalTarget));
-    // await fetch(`/goals/change-goal-target/${goal.id}`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({ goal_id: goal.id, target: newGoalTarget })
-    // }).then(res => {
-    //   res.json().then(response => {
-    //     onChangeTarget(response);
-    //     setNewGoalTarget('');
-    //   });
-    // });
     setNewGoalTarget('');
     hideChangeTargetForm();
   };
@@ -32,10 +22,8 @@ const ChangeTargetForm = ({ goal, onChangeTarget, hideChangeTargetForm }) => {
 
   useEffect(() => {
     if (
-      newGoalTarget === '' ||
-      (Number.isInteger(Number(newGoalTarget)) &&
-        newGoalTarget > 0 &&
-        Number(newGoalTarget) !== goal.target)
+      goalTargetValidationService(newGoalTarget) &&
+      Number(newGoalTarget) !== goal.target
     ) {
       setNewGoalTargetInvalid(false);
       setSubmitButtonDisabled(false);
@@ -66,15 +54,9 @@ const ChangeTargetForm = ({ goal, onChangeTarget, hideChangeTargetForm }) => {
             />
             {newGoalTargetInvalid && (
               <Container>
-                <Form.Row className='goaloptions-change-goal-target-error'>
-                  * Target must be different
-                </Form.Row>
-                <Form.Row className='goaloptions-change-goal-target-error'>
-                  * Target must be a full number
-                </Form.Row>
-                <Form.Row className='goaloptions-change-goal-target-error'>
-                  * Target must be greater than 0
-                </Form.Row>
+                <FormError error='Target must be different' />
+                <FormError error='Target must be a full number' />
+                <FormError error='Target must be greater than 0' />
               </Container>
             )}
           </Col>
@@ -110,6 +92,5 @@ ChangeTargetForm.propTypes = {
       })
     ).isRequired
   }).isRequired,
-  onChangeTarget: PropTypes.func.isRequired,
   hideChangeTargetForm: PropTypes.func.isRequired
 };

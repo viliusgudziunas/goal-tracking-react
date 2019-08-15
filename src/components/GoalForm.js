@@ -7,6 +7,7 @@ import {
   goalNameValidationService,
   goalTargetValidationService
 } from '../services/validationService';
+import FormError from './FormError';
 
 const GoalForm = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const GoalForm = () => {
   const [goalTargetInvalid, setGoalTargetInvalid] = useState(false);
 
   useEffect(() => {
-    if (goalName === '' || goalNameValidationService(goals, goalName)) {
+    if (goalNameValidationService(goals, goalName)) {
       setGoalNameInvalid(false);
       if (!goalTargetInvalid) setSubmitButtonDisabled(false);
     } else {
@@ -41,7 +42,7 @@ const GoalForm = () => {
   }, [goalName, goalTargetInvalid, goals]);
 
   useEffect(() => {
-    if (goalTarget === '' || goalTargetValidationService(goalTarget)) {
+    if (goalTargetValidationService(goalTarget)) {
       setGoalTargetInvalid(false);
       if (!goalNameInvalid) setSubmitButtonDisabled(false);
     } else {
@@ -64,12 +65,8 @@ const GoalForm = () => {
             />
             {goalNameInvalid && (
               <Container>
-                <Form.Row className='goalform-goal-name-error'>
-                  * Goal names must be unique
-                </Form.Row>
-                <Form.Row className='goalform-goal-name-error'>
-                  * Goal names must be words
-                </Form.Row>
+                <FormError error='Goal names must be unique' />
+                <FormError error='Goal names must be words' />
               </Container>
             )}
           </Col>
@@ -83,9 +80,8 @@ const GoalForm = () => {
             />
             {goalTargetInvalid && (
               <Container>
-                <Form.Row className='goalform-goal-target-error'>
-                  * Goal target must be a full number greater than 0
-                </Form.Row>
+                <FormError error='Target must be a full number' />
+                <FormError error='Target must be greater than 0' />
               </Container>
             )}
           </Col>
