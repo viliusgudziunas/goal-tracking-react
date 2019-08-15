@@ -1,4 +1,9 @@
-import { FETCH_GOALS, NEW_GOAL, COMPLETE_GOAL } from '../actions/types';
+import {
+  FETCH_GOALS,
+  NEW_GOAL,
+  COMPLETE_GOAL,
+  DELETE_GOAL
+} from '../actions/types';
 
 const initialState = {
   items: []
@@ -17,9 +22,19 @@ const goalsReducer = (state = initialState, { type, payload }) => {
         items: [...state.items, payload]
       };
     case COMPLETE_GOAL:
+      state.items.splice(
+        state.items.indexOf(payload.oldGoal),
+        1,
+        payload.newGoal
+      );
       return {
         ...state,
-        items: state.items.splice(state.items.indexOf(payload), 1, payload.id)
+        items: [...state.items]
+      };
+    case DELETE_GOAL:
+      return {
+        ...state,
+        items: [...payload]
       };
     default:
       return state;

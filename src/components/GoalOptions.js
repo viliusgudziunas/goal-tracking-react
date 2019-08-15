@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Card, Button, Row } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import './styles/GoalOptions.css';
 import PropTypes from 'prop-types';
+import { deleteGoalAction } from '../actions/goalActions';
 import goalService from './services/goalService';
 import ChangeTargetForm from './ChangeTargetForm';
 
-const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
+const GoalOptions = ({ goal, onChangeTarget }) => {
+  const dispatch = useDispatch();
   const [completedGoalsThisWeek, setCompletedGoalsThisWeek] = useState(0);
 
   useEffect(() => {
@@ -16,22 +19,6 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
   }, [goal]);
 
   const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
-
-  const handleDeleteGoal = async () => {
-    setDeleteButtonDisabled(true);
-    await fetch(`/goals/delete-goal/${goal.id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => {
-      res.json().then(response => {
-        onDeleteGoal(response);
-      });
-    });
-    setDeleteButtonDisabled(false);
-  };
-
   const [changeTargetButtonDisabled, setChangeTargetButtonDisabled] = useState(
     false
   );
@@ -40,12 +27,14 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
   );
 
   const handleChangeTargetButtonClick = () => {
+    setDeleteButtonDisabled(true);
     setChangeTargetButtonDisabled(true);
     setChangeTargetFormDisplayed(true);
   };
   const hideChangeTargetForm = () => {
     setChangeTargetFormDisplayed(false);
     setChangeTargetButtonDisabled(false);
+    setDeleteButtonDisabled(false);
   };
 
   const countInstancesThisWeek = timestamp => {
@@ -92,7 +81,7 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
           <Row>
             <Button
               className='goalOptions-delete-button'
-              onClick={handleDeleteGoal}
+              onClick={() => dispatch(deleteGoalAction(goal))}
               disabled={deleteButtonDisabled}
             >
               Delete Goal
@@ -120,6 +109,5 @@ GoalOptions.propTypes = {
       })
     ).isRequired
   }).isRequired,
-  onDeleteGoal: PropTypes.func.isRequired,
   onChangeTarget: PropTypes.func.isRequired
 };
