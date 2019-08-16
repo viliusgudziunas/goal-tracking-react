@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Form, Col } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import './styles/ChangeGoalForm.css';
 import PropTypes from 'prop-types';
 import { changeGoalTargetAction } from '../actions/goalActions';
 import { goalTargetValidationService } from '../services/validationService';
 import FormError from './FormError';
 
-const ChangeTargetForm = ({ goal, hideChangeTargetForm }) => {
+const ChangeGoalForm = ({ goal, hideChangeTargetForm }) => {
   const dispatch = useDispatch();
+  const [newGoalName, setNewGoalName] = useState('');
   const [newGoalTarget, setNewGoalTarget] = useState('');
 
   const handleFormSubmit = async e => {
@@ -41,12 +43,19 @@ const ChangeTargetForm = ({ goal, hideChangeTargetForm }) => {
   };
 
   return (
-    <Container className='goalOptions-container2'>
+    <Container className='changeGoalForm-container'>
       <Form onSubmit={handleFormSubmit}>
         <Form.Row>
           <Col>
             <Form.Control
-              required
+              type='goalName'
+              value={newGoalName}
+              onChange={e => setNewGoalName(e.target.value)}
+              placeholder='Enter New Goal Name'
+            />
+          </Col>
+          <Col>
+            <Form.Control
               type='goalTarget'
               value={newGoalTarget}
               onChange={e => setNewGoalTarget(e.target.value)}
@@ -60,6 +69,8 @@ const ChangeTargetForm = ({ goal, hideChangeTargetForm }) => {
               </Container>
             )}
           </Col>
+        </Form.Row>
+        <Form.Row>
           <Col sm='true'>
             <Button type='submit' disabled={submitButtonDisabled}>
               Change Target
@@ -76,9 +87,9 @@ const ChangeTargetForm = ({ goal, hideChangeTargetForm }) => {
   );
 };
 
-export default ChangeTargetForm;
+export default ChangeGoalForm;
 
-ChangeTargetForm.propTypes = {
+ChangeGoalForm.propTypes = {
   goal: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,

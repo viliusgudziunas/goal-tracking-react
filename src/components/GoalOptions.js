@@ -5,7 +5,7 @@ import './styles/GoalOptions.css';
 import PropTypes from 'prop-types';
 import { deleteGoalAction } from '../actions/goalActions';
 import { countGoalInstancesService } from '../services/goalService';
-import ChangeTargetForm from './ChangeTargetForm';
+import ChangeGoalForm from './ChangeGoalForm';
 
 const GoalOptions = ({ goal }) => {
   const dispatch = useDispatch();
@@ -61,13 +61,13 @@ const GoalOptions = ({ goal }) => {
         </Row>
       </Container>
       {changeTargetFormDisplayed && (
-        <ChangeTargetForm
+        <ChangeGoalForm
           goal={goal}
           hideChangeTargetForm={hideChangeTargetForm}
         />
       )}
       {!changeTargetFormDisplayed && (
-        <Container className='goalOptions-container3'>
+        <Container className='goalOptions-container2'>
           <Row>
             <Button
               className='goalOptions-change-target-button'
