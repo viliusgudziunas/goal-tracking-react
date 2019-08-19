@@ -3,7 +3,7 @@ import {
   NEW_GOAL,
   COMPLETE_GOAL,
   DELETE_GOAL,
-  CHANGE_GOAL_TARGET
+  CHANGE_GOAL
 } from './types';
 
 export const fetchGoalsAction = () => dispatch => {
@@ -85,7 +85,7 @@ export const changeGoalAction = (
   }).then(res =>
     res.json().then(goal =>
       dispatch({
-        type: CHANGE_GOAL_TARGET,
+        type: CHANGE_GOAL,
         payload: { oldGoal: goalData, newGoal: goal }
       })
     )
