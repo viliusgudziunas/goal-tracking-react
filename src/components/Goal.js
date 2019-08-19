@@ -1,43 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Accordion, Card } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import './styles/Goal.css';
 import PropTypes from 'prop-types';
+import { completeGoalAction } from '../actions/goalActions';
 import GoalOptions from './GoalOptions';
-import goalService from './services/goalService';
+import { goalCompletedService } from '../services/goalService';
 
-const Goal = ({
-  goal,
-  eventKey,
-  onDeleteGoal,
-  onCompleteGoal,
-  onChangeTarget
-}) => {
+const Goal = ({ goal }) => {
+  const dispatch = useDispatch();
+  const [goalCardHeaderCSS, setGoalCardHeaderCSS] = useState('');
   const [goalCompleteButtonDisabled, setGoalCompleteButtonDisabled] = useState(
     false
   );
 
-  const handleGoalCompleteClick = async () => {
-    setGoalCompleteButtonDisabled(true);
-    await fetch(`/goals/new-goal-instance`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ goal_id: goal.id })
-    }).then(res => {
-      res.json().then(response => {
-        onCompleteGoal(response);
-      });
-    });
-  };
-
-  const [goalCardHeaderCSS, setGoalCardHeaderCSS] = useState('');
-
   useEffect(() => {
-    if (goalService.checkGoalCompleteToday(goal.instances)) {
+    if (goalCompletedService(goal.instances)) {
       setGoalCardHeaderCSS('goal-card-header-completed');
       setGoalCompleteButtonDisabled(true);
-    } else if (goalService.checkGoalCompleteToday(goal.instances) === false) {
+    } else {
       setGoalCardHeaderCSS('goal-card-header-uncompleted');
       setGoalCompleteButtonDisabled(false);
     }
@@ -49,7 +30,7 @@ const Goal = ({
         <Row>
           <Accordion.Toggle
             as={Col}
-            eventKey={eventKey}
+            eventKey={goal.id}
             className='goal-card-accordion-toggle'
           >
             {goal.name}
@@ -58,19 +39,15 @@ const Goal = ({
             variant='success'
             size='sm'
             className='goal-done-button'
-            onClick={handleGoalCompleteClick}
+            onClick={() => dispatch(completeGoalAction(goal))}
             disabled={goalCompleteButtonDisabled}
           >
             &#10004;
           </Button>
         </Row>
       </Card.Header>
-      <Accordion.Collapse eventKey={eventKey}>
-        <GoalOptions
-          goal={goal}
-          onDeleteGoal={onDeleteGoal}
-          onChangeTarget={onChangeTarget}
-        />
+      <Accordion.Collapse eventKey={goal.id}>
+        <GoalOptions goal={goal} />
       </Accordion.Collapse>
     </Card>
   );
@@ -91,9 +68,5 @@ Goal.propTypes = {
         timestamp: PropTypes.string.isRequired
       })
     ).isRequired
-  }).isRequired,
-  eventKey: PropTypes.number.isRequired,
-  onDeleteGoal: PropTypes.func.isRequired,
-  onCompleteGoal: PropTypes.func.isRequired,
-  onChangeTarget: PropTypes.func.isRequired
+  }).isRequired
 };

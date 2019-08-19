@@ -1,51 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Card, Button, Row } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import './styles/GoalOptions.css';
 import PropTypes from 'prop-types';
-import goalService from './services/goalService';
-import ChangeTargetForm from './ChangeTargetForm';
+import { deleteGoalAction } from '../actions/goalActions';
+import { countGoalInstancesService } from '../services/goalService';
+import ChangeGoalForm from './ChangeGoalForm';
 
-const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
+const GoalOptions = ({ goal }) => {
+  const dispatch = useDispatch();
   const [completedGoalsThisWeek, setCompletedGoalsThisWeek] = useState(0);
 
   useEffect(() => {
     const goalInstancesThisWeek = goal.instances.filter(({ timestamp }) =>
-      goalService.countGoalInstancesThisWeek(timestamp)
+      countGoalInstancesService(timestamp)
     ).length;
     setCompletedGoalsThisWeek(goalInstancesThisWeek);
   }, [goal]);
 
   const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
+  const [changeGoalButtonDisabled, setChangeGoalButtonDisabled] = useState(
+    false
+  );
+  const [changeGoalFormDisplayed, setChangeGoalFormDisplayed] = useState(false);
 
-  const handleDeleteGoal = async () => {
+  const handleChangeGoalButtonClick = () => {
     setDeleteButtonDisabled(true);
-    await fetch(`/goals/delete-goal/${goal.id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => {
-      res.json().then(response => {
-        onDeleteGoal(response);
-      });
-    });
+    setChangeGoalButtonDisabled(true);
+    setChangeGoalFormDisplayed(true);
+  };
+  const hideChangeGoalForm = () => {
+    setChangeGoalFormDisplayed(false);
+    setChangeGoalButtonDisabled(false);
     setDeleteButtonDisabled(false);
-  };
-
-  const [changeTargetButtonDisabled, setChangeTargetButtonDisabled] = useState(
-    false
-  );
-  const [changeTargetFormDisplayed, setChangeTargetFormDisplayed] = useState(
-    false
-  );
-
-  const handleChangeTargetButtonClick = () => {
-    setChangeTargetButtonDisabled(true);
-    setChangeTargetFormDisplayed(true);
-  };
-  const hideChangeTargetForm = () => {
-    setChangeTargetFormDisplayed(false);
-    setChangeTargetButtonDisabled(false);
   };
 
   const countInstancesThisWeek = timestamp => {
@@ -71,28 +58,24 @@ const GoalOptions = ({ goal, onDeleteGoal, onChangeTarget }) => {
           Weekly Progress: {completedGoalsThisWeek}/{goal.target}
         </Row>
       </Container>
-      {changeTargetFormDisplayed && (
-        <ChangeTargetForm
-          goal={goal}
-          onChangeTarget={onChangeTarget}
-          hideChangeTargetForm={hideChangeTargetForm}
-        />
+      {changeGoalFormDisplayed && (
+        <ChangeGoalForm goal={goal} hideChangeGoalForm={hideChangeGoalForm} />
       )}
-      {!changeTargetFormDisplayed && (
-        <Container className='goalOptions-container3'>
+      {!changeGoalFormDisplayed && (
+        <Container className='goalOptions-container2'>
           <Row>
             <Button
-              className='goalOptions-change-target-button'
-              onClick={handleChangeTargetButtonClick}
-              disabled={changeTargetButtonDisabled}
+              className='goalOptions-change-goal-button'
+              onClick={handleChangeGoalButtonClick}
+              disabled={changeGoalButtonDisabled}
             >
-              Change Target
+              Change Goal
             </Button>
           </Row>
           <Row>
             <Button
               className='goalOptions-delete-button'
-              onClick={handleDeleteGoal}
+              onClick={() => dispatch(deleteGoalAction(goal))}
               disabled={deleteButtonDisabled}
             >
               Delete Goal
@@ -119,7 +102,5 @@ GoalOptions.propTypes = {
         timestamp: PropTypes.string.isRequired
       })
     ).isRequired
-  }).isRequired,
-  onDeleteGoal: PropTypes.func.isRequired,
-  onChangeTarget: PropTypes.func.isRequired
+  }).isRequired
 };

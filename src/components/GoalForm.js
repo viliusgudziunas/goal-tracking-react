@@ -1,60 +1,48 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Container, Form, Col, Button } from 'react-bootstrap';
 import './styles/GoalForm.css';
-import PropTypes from 'prop-types';
-import validationService from './services/validationService';
+import { addNewGoalAction } from '../actions/goalActions';
+import {
+  goalNameValidationService,
+  goalTargetValidationService
+} from '../services/validationService';
+import FormError from './FormError';
 
-const GoalForm = ({ onNewGoal, validateNewGoalName }) => {
+const GoalForm = () => {
+  const dispatch = useDispatch();
   const [goalName, setGoalName] = useState('');
   const [goalTarget, setGoalTarget] = useState('');
-  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    setSubmitButtonDisabled(true);
-    await fetch('/goals/new-goal', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    dispatch(
+      addNewGoalAction({
         name: goalName.trim(),
         target: Number(goalTarget)
       })
-    }).then(res => {
-      res.json().then(response => {
-        onNewGoal(response);
-        setGoalName('');
-        setGoalTarget('');
-      });
-    });
-    setSubmitButtonDisabled(false);
+    );
+    setGoalName('');
+    setGoalTarget('');
   };
 
+  const goals = useSelector(state => state.goals.items);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const [goalNameInvalid, setGoalNameInvalid] = useState(false);
   const [goalTargetInvalid, setGoalTargetInvalid] = useState(false);
 
   useEffect(() => {
-    if (
-      goalName === '' ||
-      (validateNewGoalName(goalName) &&
-        !validationService.checkForNumbers(goalName))
-    ) {
+    if (goalNameValidationService(goals, goalName)) {
       setGoalNameInvalid(false);
       if (!goalTargetInvalid) setSubmitButtonDisabled(false);
     } else {
       setGoalNameInvalid(true);
       setSubmitButtonDisabled(true);
     }
-  }, [goalName, goalTargetInvalid, validateNewGoalName]);
+  }, [goalName, goalTargetInvalid, goals]);
 
   useEffect(() => {
-    if (
-      goalTarget === '' ||
-      (!isNaN(goalTarget) &&
-        Number.isInteger(Number(goalTarget)) &&
-        goalTarget > 0)
-    ) {
+    if (goalTargetValidationService(goalTarget)) {
       setGoalTargetInvalid(false);
       if (!goalNameInvalid) setSubmitButtonDisabled(false);
     } else {
@@ -77,12 +65,8 @@ const GoalForm = ({ onNewGoal, validateNewGoalName }) => {
             />
             {goalNameInvalid && (
               <Container>
-                <Form.Row className='goalform-goal-name-error'>
-                  * Goal names must be unique
-                </Form.Row>
-                <Form.Row className='goalform-goal-name-error'>
-                  * Goal names must be words
-                </Form.Row>
+                <FormError error='Goal names must be unique' />
+                <FormError error='Goal names must be words' />
               </Container>
             )}
           </Col>
@@ -96,14 +80,17 @@ const GoalForm = ({ onNewGoal, validateNewGoalName }) => {
             />
             {goalTargetInvalid && (
               <Container>
-                <Form.Row className='goalform-goal-target-error'>
-                  * Goal target must be a full number greater than 0
-                </Form.Row>
+                <FormError error='Target must be a full number' />
+                <FormError error='Target must be greater than 0' />
               </Container>
             )}
           </Col>
         </Form.Row>
-        <Button type='submit' disabled={submitButtonDisabled}>
+        <Button
+          type='submit'
+          className='goalForm-submit-button'
+          disabled={submitButtonDisabled}
+        >
           Add New Goal
         </Button>
       </Form>
@@ -112,8 +99,3 @@ const GoalForm = ({ onNewGoal, validateNewGoalName }) => {
 };
 
 export default GoalForm;
-
-GoalForm.propTypes = {
-  onNewGoal: PropTypes.func.isRequired,
-  validateNewGoalName: PropTypes.func.isRequired
-};

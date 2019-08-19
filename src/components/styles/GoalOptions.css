@@ -5,12 +5,6 @@
 .goalOptions-container2 {
   border-top: 1px solid black;
   padding-top: 1%;
-  padding-left: 0;
-}
-
-.goalOptions-container3 {
-  border-top: 1px solid black;
-  padding-top: 1%;
 }
 
 .goalOptions-delete-button {
@@ -38,36 +32,31 @@
   color: red;
 }
 
-.goalOptions-change-target-button {
+.goalOptions-change-goal-button {
   background: none;
   color: green;
   border: none;
   padding: 0;
   margin-bottom: 1%;
 }
-.goalOptions-change-target-button:hover {
+.goalOptions-change-goal-button:hover {
   background: none;
   color: green;
   text-decoration: underline;
 }
-.goalOptions-change-target-button:enabled {
+.goalOptions-change-goal-button:enabled {
   box-shadow: none;
 }
-.goalOptions-change-target-button:active {
+.goalOptions-change-goal-button:active {
   color: green !important;
   background-color: white !important;
   border-color: none !important;
   box-shadow: none !important;
 }
-.goalOptions-change-target-button:disabled {
+.goalOptions-change-goal-button:disabled {
   background: none;
   color: green;
 }
-.goalOptions-change-target-button:disabled:hover {
+.goalOptions-change-goal-button:disabled:hover {
   text-decoration: none;
-}
-
-.goaloptions-change-goal-target-error {
-  color: red;
-  text-align: left;
 }
