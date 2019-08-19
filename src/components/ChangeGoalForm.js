@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Form, Col } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './styles/ChangeGoalForm.css';
 import PropTypes from 'prop-types';
 import { changeGoalTargetAction } from '../actions/goalActions';
-import { goalTargetValidationService } from '../services/validationService';
+import {
+  goalNameValidationService,
+  goalTargetValidationService
+} from '../services/validationService';
 import FormError from './FormError';
 
-const ChangeGoalForm = ({ goal, hideChangeTargetForm }) => {
+const ChangeGoalForm = ({ goal, hideChangeGoalForm }) => {
   const dispatch = useDispatch();
   const [newGoalName, setNewGoalName] = useState('');
   const [newGoalTarget, setNewGoalTarget] = useState('');
@@ -15,12 +18,25 @@ const ChangeGoalForm = ({ goal, hideChangeTargetForm }) => {
   const handleFormSubmit = async e => {
     e.preventDefault();
     dispatch(changeGoalTargetAction(goal, newGoalTarget));
+    setNewGoalName('');
     setNewGoalTarget('');
-    hideChangeTargetForm();
+    hideChangeGoalForm();
   };
 
+  const goals = useSelector(state => state.goals.items);
+  const [newGoalNameInvalid, setNewGoalNameInvalid] = useState(false);
   const [newGoalTargetInvalid, setNewGoalTargetInvalid] = useState(false);
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+
+  useEffect(() => {
+    if (goalNameValidationService(goals, newGoalName)) {
+      setNewGoalNameInvalid(false);
+      if (!newGoalTargetInvalid) setSubmitButtonDisabled(false);
+    } else {
+      setNewGoalNameInvalid(true);
+      setSubmitButtonDisabled(true);
+    }
+  }, [goals, newGoalName, newGoalTargetInvalid]);
 
   useEffect(() => {
     if (
@@ -28,18 +44,18 @@ const ChangeGoalForm = ({ goal, hideChangeTargetForm }) => {
       Number(newGoalTarget) !== goal.target
     ) {
       setNewGoalTargetInvalid(false);
-      setSubmitButtonDisabled(false);
+      if (!newGoalNameInvalid) setSubmitButtonDisabled(false);
     } else {
       setNewGoalTargetInvalid(true);
       setSubmitButtonDisabled(true);
     }
-  }, [newGoalTarget, goal.target]);
+  }, [newGoalTarget, goal.target, newGoalNameInvalid]);
 
-  const handleGoalTargetChangeBack = () => {
+  const handleChangeGoalBackButtonClick = () => {
     setNewGoalTarget('');
     setNewGoalTargetInvalid(false);
     setSubmitButtonDisabled(false);
-    hideChangeTargetForm();
+    hideChangeGoalForm();
   };
 
   return (
@@ -53,6 +69,12 @@ const ChangeGoalForm = ({ goal, hideChangeTargetForm }) => {
               onChange={e => setNewGoalName(e.target.value)}
               placeholder='Enter New Goal Name'
             />
+            {newGoalNameInvalid && (
+              <Container>
+                <FormError error='Goal names must be unique' />
+                <FormError error='Goal names must be words' />
+              </Container>
+            )}
           </Col>
           <Col>
             <Form.Control
@@ -73,11 +95,14 @@ const ChangeGoalForm = ({ goal, hideChangeTargetForm }) => {
         <Form.Row>
           <Col sm='true'>
             <Button type='submit' disabled={submitButtonDisabled}>
-              Change Target
+              Change Goal
             </Button>
           </Col>
           <Col sm='true'>
-            <Button variant='secondary' onClick={handleGoalTargetChangeBack}>
+            <Button
+              variant='secondary'
+              onClick={handleChangeGoalBackButtonClick}
+            >
               Back
             </Button>
           </Col>
@@ -103,5 +128,5 @@ ChangeGoalForm.propTypes = {
       })
     ).isRequired
   }).isRequired,
-  hideChangeTargetForm: PropTypes.func.isRequired
+  hideChangeGoalForm: PropTypes.func.isRequired
 };

@@ -19,21 +19,19 @@ const GoalOptions = ({ goal }) => {
   }, [goal]);
 
   const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
-  const [changeTargetButtonDisabled, setChangeTargetButtonDisabled] = useState(
+  const [changeGoalButtonDisabled, setChangeGoalButtonDisabled] = useState(
     false
   );
-  const [changeTargetFormDisplayed, setChangeTargetFormDisplayed] = useState(
-    false
-  );
+  const [changeGoalFormDisplayed, setChangeGoalFormDisplayed] = useState(false);
 
-  const handleChangeTargetButtonClick = () => {
+  const handleChangeGoalButtonClick = () => {
     setDeleteButtonDisabled(true);
-    setChangeTargetButtonDisabled(true);
-    setChangeTargetFormDisplayed(true);
+    setChangeGoalButtonDisabled(true);
+    setChangeGoalFormDisplayed(true);
   };
-  const hideChangeTargetForm = () => {
-    setChangeTargetFormDisplayed(false);
-    setChangeTargetButtonDisabled(false);
+  const hideChangeGoalForm = () => {
+    setChangeGoalFormDisplayed(false);
+    setChangeGoalButtonDisabled(false);
     setDeleteButtonDisabled(false);
   };
 
@@ -60,21 +58,18 @@ const GoalOptions = ({ goal }) => {
           Weekly Progress: {completedGoalsThisWeek}/{goal.target}
         </Row>
       </Container>
-      {changeTargetFormDisplayed && (
-        <ChangeGoalForm
-          goal={goal}
-          hideChangeTargetForm={hideChangeTargetForm}
-        />
+      {changeGoalFormDisplayed && (
+        <ChangeGoalForm goal={goal} hideChangeGoalForm={hideChangeGoalForm} />
       )}
-      {!changeTargetFormDisplayed && (
+      {!changeGoalFormDisplayed && (
         <Container className='goalOptions-container2'>
           <Row>
             <Button
-              className='goalOptions-change-target-button'
-              onClick={handleChangeTargetButtonClick}
-              disabled={changeTargetButtonDisabled}
+              className='goalOptions-change-goal-button'
+              onClick={handleChangeGoalButtonClick}
+              disabled={changeGoalButtonDisabled}
             >
-              Change Target
+              Change Goal
             </Button>
           </Row>
           <Row>
