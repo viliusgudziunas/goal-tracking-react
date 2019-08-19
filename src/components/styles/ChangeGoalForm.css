@@ -3,3 +3,61 @@
   padding-top: 1%;
   padding-left: 0;
 }
+
+.changeGoalForm-buttons-row {
+  display: flex;
+  justify-content: center;
+}
+
+.changeGoalForm-submit-button {
+  background: none;
+  color: green;
+  border: none;
+  padding: 0;
+}
+.changeGoalForm-submit-button:hover {
+  background: none;
+  color: green;
+  text-decoration: underline;
+}
+.changeGoalForm-submit-button:enabled {
+  box-shadow: none;
+}
+.changeGoalForm-submit-button:active {
+  color: green !important;
+  background-color: white !important;
+  border-color: none !important;
+  box-shadow: none !important;
+}
+.changeGoalForm-submit-button:disabled {
+  background: none;
+  color: green;
+}
+.changeGoalForm-submit-button:disabled:hover {
+  text-decoration: none;
+}
+
+.changeGoalForm-back-button {
+  background: none;
+  color: rgb(95, 89, 89);
+  border: none;
+  padding: 0;
+}
+.changeGoalForm-back-button:hover {
+  background: none;
+  color: rgb(95, 89, 89);
+  text-decoration: underline;
+}
+.changeGoalForm-back-button:enabled {
+  box-shadow: none;
+}
+.changeGoalForm-back-button:active {
+  color: rgb(95, 89, 89) !important;
+  background-color: white !important;
+  border-color: none !important;
+  box-shadow: none !important;
+}
+.changeGoalForm-back-button:disabled {
+  background: none;
+  color: rgb(95, 89, 89);
+}

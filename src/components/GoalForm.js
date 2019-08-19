@@ -86,7 +86,11 @@ const GoalForm = () => {
             )}
           </Col>
         </Form.Row>
-        <Button type='submit' disabled={submitButtonDisabled}>
+        <Button
+          type='submit'
+          className='goalForm-submit-button'
+          disabled={submitButtonDisabled}
+        >
           Add New Goal
         </Button>
       </Form>

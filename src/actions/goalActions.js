@@ -67,13 +67,21 @@ export const deleteGoalAction = goalData => dispatch => {
   );
 };
 
-export const changeGoalTargetAction = (goalData, newGoalTarget) => dispatch => {
-  fetch(`/goals/change-goal-target/${goalData.id}`, {
+export const changeGoalAction = (
+  goalData,
+  newGoalName,
+  newGoalTarget
+) => dispatch => {
+  fetch(`/goals/change-goal/${goalData.id}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ goal_id: goalData.id, target: newGoalTarget })
+    body: JSON.stringify({
+      goal_id: goalData.id,
+      name: newGoalName,
+      target: newGoalTarget
+    })
   }).then(res =>
     res.json().then(goal =>
       dispatch({

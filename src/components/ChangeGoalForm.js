@@ -3,7 +3,7 @@ import { Container, Button, Form, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import './styles/ChangeGoalForm.css';
 import PropTypes from 'prop-types';
-import { changeGoalTargetAction } from '../actions/goalActions';
+import { changeGoalAction } from '../actions/goalActions';
 import {
   goalNameValidationService,
   goalTargetValidationService
@@ -17,7 +17,9 @@ const ChangeGoalForm = ({ goal, hideChangeGoalForm }) => {
 
   const handleFormSubmit = async e => {
     e.preventDefault();
-    dispatch(changeGoalTargetAction(goal, newGoalTarget));
+    if (!(newGoalName === '' && newGoalTarget === '')) {
+      dispatch(changeGoalAction(goal, newGoalName, newGoalTarget));
+    }
     setNewGoalName('');
     setNewGoalTarget('');
     hideChangeGoalForm();
@@ -92,20 +94,21 @@ const ChangeGoalForm = ({ goal, hideChangeGoalForm }) => {
             )}
           </Col>
         </Form.Row>
-        <Form.Row>
-          <Col sm='true'>
-            <Button type='submit' disabled={submitButtonDisabled}>
-              Change Goal
-            </Button>
-          </Col>
-          <Col sm='true'>
-            <Button
-              variant='secondary'
-              onClick={handleChangeGoalBackButtonClick}
-            >
-              Back
-            </Button>
-          </Col>
+        <Form.Row className='changeGoalForm-buttons-row'>
+          <Button
+            type='submit'
+            className='changeGoalForm-submit-button'
+            disabled={submitButtonDisabled}
+          >
+            Change Goal
+          </Button>
+          &nbsp;|&nbsp;
+          <Button
+            className='changeGoalForm-back-button'
+            onClick={handleChangeGoalBackButtonClick}
+          >
+            Back
+          </Button>
         </Form.Row>
       </Form>
     </Container>
