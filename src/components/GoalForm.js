@@ -67,11 +67,13 @@ const GoalForm = () => {
     <Container className='goalform-container'>
       <Form onSubmit={handleSubmit}>
         {formDisplayed && (
-          <Form.Row>
+          <Form.Group as={Form.Row} controlId='formGoalName'>
+            <Form.Label column sm='3'>
+              Goal Name
+            </Form.Label>
             <Col>
               <Form.Control
                 required
-                type='goalName'
                 value={goalName}
                 onChange={e => setGoalName(e.target.value)}
                 placeholder='Enter Goal Name'
@@ -83,10 +85,16 @@ const GoalForm = () => {
                 </Container>
               )}
             </Col>
+          </Form.Group>
+        )}
+        {formDisplayed && (
+          <Form.Group as={Form.Row} controlId='formGoalTarget'>
+            <Form.Label column sm='3'>
+              Goal Target
+            </Form.Label>
             <Col>
               <Form.Control
                 required
-                type='goalTarget'
                 value={goalTarget}
                 onChange={e => setGoalTarget(e.target.value)}
                 placeholder='Enter Weekly Target'
@@ -98,7 +106,7 @@ const GoalForm = () => {
                 </Container>
               )}
             </Col>
-          </Form.Row>
+          </Form.Group>
         )}
         <Button
           type='submit'

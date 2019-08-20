@@ -10,7 +10,6 @@
 }
 
 .changeGoalForm-submit-button {
-  margin-top: 2%;
   background: none;
   color: green;
   border: none;
@@ -39,7 +38,6 @@
 }
 
 .changeGoalForm-back-button {
-  margin-top: 2%;
   background: none;
   color: rgb(95, 89, 89);
   border: none;

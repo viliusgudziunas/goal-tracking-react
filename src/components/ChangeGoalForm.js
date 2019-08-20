@@ -63,10 +63,13 @@ const ChangeGoalForm = ({ goal, hideChangeGoalForm }) => {
   return (
     <Container className='changeGoalForm-container'>
       <Form onSubmit={handleFormSubmit}>
-        <Form.Row>
+        <Form.Group as={Form.Row} controlId='formNewGoalName'>
+          <Form.Label column sm='3'>
+            Goal Name
+          </Form.Label>
           <Col>
             <Form.Control
-              type='goalName'
+              required
               value={newGoalName}
               onChange={e => setNewGoalName(e.target.value)}
               placeholder='Enter New Goal Name'
@@ -78,9 +81,14 @@ const ChangeGoalForm = ({ goal, hideChangeGoalForm }) => {
               </Container>
             )}
           </Col>
+        </Form.Group>
+        <Form.Group as={Form.Row} controlId='formNewGoalTarget'>
+          <Form.Label column sm='3'>
+            Goal Target
+          </Form.Label>
           <Col>
             <Form.Control
-              type='goalTarget'
+              required
               value={newGoalTarget}
               onChange={e => setNewGoalTarget(e.target.value)}
               placeholder='Enter New Goal Target'
@@ -93,7 +101,7 @@ const ChangeGoalForm = ({ goal, hideChangeGoalForm }) => {
               </Container>
             )}
           </Col>
-        </Form.Row>
+        </Form.Group>
         <Form.Row className='changeGoalForm-buttons-row'>
           <Button
             type='submit'
