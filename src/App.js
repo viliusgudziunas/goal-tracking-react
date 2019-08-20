@@ -5,7 +5,6 @@ import { fetchGoalsAction } from './actions/goalActions';
 import Goals from './components/Goals';
 import GoalForm from './components/GoalForm';
 import GoalsHeader from './components/GoalsHeader';
-import validationService from './components/services/validationService';
 
 function App() {
   const dispatch = useDispatch();
