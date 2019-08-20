@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Accordion, Card } from 'react-bootstrap';
+import { Row, Col, Button, Accordion, Card, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import './styles/Goal.css';
 import PropTypes from 'prop-types';
@@ -23,6 +23,7 @@ const Goal = ({ goal }) => {
       setGoalCompleteButtonDisabled(false);
     }
   }, [goal.instances]);
+  console.log(goal);
 
   return (
     <Card>
@@ -35,15 +36,32 @@ const Goal = ({ goal }) => {
           >
             {goal.name}
           </Accordion.Toggle>
-          <Button
-            variant='success'
-            size='sm'
-            className='goal-done-button'
-            onClick={() => dispatch(completeGoalAction(goal))}
-            disabled={goalCompleteButtonDisabled}
-          >
-            &#10004;
-          </Button>
+          {goal.target_type === 2 ? (
+            <Col>
+              <Form>
+                <Form.Control required />
+                <Button
+                  variant='success'
+                  size='sm'
+                  className='goal-done-button'
+                  onClick={() => dispatch(completeGoalAction(goal))}
+                  disabled={goalCompleteButtonDisabled}
+                >
+                  &#10004;
+                </Button>
+              </Form>
+            </Col>
+          ) : (
+            <Button
+              variant='success'
+              size='sm'
+              className='goal-done-button'
+              onClick={() => dispatch(completeGoalAction(goal))}
+              disabled={goalCompleteButtonDisabled}
+            >
+              &#10004;
+            </Button>
+          )}
         </Row>
       </Card.Header>
       <Accordion.Collapse eventKey={goal.id}>
@@ -59,6 +77,7 @@ Goal.propTypes = {
   goal: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    target_type: PropTypes.number.isRequired,
     target: PropTypes.number.isRequired,
     timestamp: PropTypes.string.isRequired,
     instances: PropTypes.arrayOf(

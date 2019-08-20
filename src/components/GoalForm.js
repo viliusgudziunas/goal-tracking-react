@@ -14,6 +14,7 @@ const GoalForm = () => {
   const [formDisplayed, setFormDisplayed] = useState(false);
   const [goalName, setGoalName] = useState('');
   const [goalTarget, setGoalTarget] = useState('');
+  const [goalTargetType, setGoalTargetType] = useState(1);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -23,7 +24,8 @@ const GoalForm = () => {
       dispatch(
         addNewGoalAction({
           name: goalName.trim(),
-          target: Number(goalTarget)
+          target_type: goalTargetType,
+          target: goalTarget
         })
       );
       setGoalName('');
@@ -63,6 +65,19 @@ const GoalForm = () => {
     setFormDisplayed(false);
   };
 
+  const handleTargetTypeChange = e => {
+    switch (e.target.value) {
+      case 'Track once a day e.g. Working Out':
+        setGoalTargetType(1);
+        break;
+      case 'Track hours every day e.g. Reading':
+        setGoalTargetType(2);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <Container className='goalform-container'>
       <Form onSubmit={handleSubmit}>
@@ -84,6 +99,19 @@ const GoalForm = () => {
                   <FormError error='Goal names must be words' />
                 </Container>
               )}
+            </Col>
+          </Form.Group>
+        )}
+        {formDisplayed && (
+          <Form.Group as={Form.Row} controlId='formGoalTargetChoice'>
+            <Form.Label column sm='3'>
+              Target Type
+            </Form.Label>
+            <Col>
+              <Form.Control as='select' onChange={handleTargetTypeChange}>
+                <option>Track once a day e.g. Working Out</option>
+                <option>Track hours every day e.g. Reading</option>
+              </Form.Control>
             </Col>
           </Form.Group>
         )}
