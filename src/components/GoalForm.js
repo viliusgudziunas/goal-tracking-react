@@ -57,6 +57,12 @@ const GoalForm = () => {
     }
   }, [goalTarget, goalNameInvalid]);
 
+  const handleNewGoalBackButtonClick = () => {
+    setGoalName('');
+    setGoalTarget('');
+    setFormDisplayed(false);
+  };
+
   return (
     <Container className='goalform-container'>
       <Form onSubmit={handleSubmit}>
@@ -101,6 +107,14 @@ const GoalForm = () => {
         >
           Add New Goal
         </Button>
+        {formDisplayed && (
+          <Button
+            className='goalForm-back-button'
+            onClick={handleNewGoalBackButtonClick}
+          >
+            &nbsp; | &nbsp;Back
+          </Button>
+        )}
       </Form>
     </Container>
   );

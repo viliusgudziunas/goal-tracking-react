@@ -1,7 +1,7 @@
 .changeGoalForm-container {
   border-top: 1px solid black;
-  padding-top: 1%;
-  padding-left: 0;
+  padding: 0;
+  padding-top: 2%;
 }
 
 .changeGoalForm-buttons-row {
@@ -10,6 +10,7 @@
 }
 
 .changeGoalForm-submit-button {
+  margin-top: 2%;
   background: none;
   color: green;
   border: none;
@@ -38,6 +39,7 @@
 }
 
 .changeGoalForm-back-button {
+  margin-top: 2%;
   background: none;
   color: rgb(95, 89, 89);
   border: none;

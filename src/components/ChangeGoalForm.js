@@ -102,12 +102,11 @@ const ChangeGoalForm = ({ goal, hideChangeGoalForm }) => {
           >
             Change Goal
           </Button>
-          &nbsp;|&nbsp;
           <Button
             className='changeGoalForm-back-button'
             onClick={handleChangeGoalBackButtonClick}
           >
-            Back
+            &nbsp; | &nbsp;Back
           </Button>
         </Form.Row>
       </Form>

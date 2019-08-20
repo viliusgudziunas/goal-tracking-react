@@ -32,3 +32,32 @@
 .goalForm-submit-button:disabled:hover {
   text-decoration: none;
 }
+
+.goalForm-back-button {
+  margin-top: 2%;
+  background: none;
+  color: rgb(95, 89, 89);
+  border: none;
+  padding: 0;
+}
+.goalForm-back-button:hover {
+  background: none;
+  color: rgb(95, 89, 89);
+  text-decoration: underline;
+}
+.goalForm-back-button:enabled {
+  box-shadow: none;
+}
+.goalForm-back-button:active {
+  color: rgb(95, 89, 89) !important;
+  background-color: white !important;
+  border-color: none !important;
+  box-shadow: none !important;
+}
+.goalForm-back-button:disabled {
+  background: none;
+  color: rgb(95, 89, 89);
+}
+.goalForm-back-button:disabled:hover {
+  text-decoration: none;
+}
