@@ -11,19 +11,25 @@ import FormError from './FormError';
 
 const GoalForm = () => {
   const dispatch = useDispatch();
+  const [formDisplayed, setFormDisplayed] = useState(false);
   const [goalName, setGoalName] = useState('');
   const [goalTarget, setGoalTarget] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(
-      addNewGoalAction({
-        name: goalName.trim(),
-        target: Number(goalTarget)
-      })
-    );
-    setGoalName('');
-    setGoalTarget('');
+    if (!formDisplayed) {
+      setFormDisplayed(true);
+    } else {
+      dispatch(
+        addNewGoalAction({
+          name: goalName.trim(),
+          target: Number(goalTarget)
+        })
+      );
+      setGoalName('');
+      setGoalTarget('');
+      setFormDisplayed(false);
+    }
   };
 
   const goals = useSelector(state => state.goals.items);
@@ -54,38 +60,40 @@ const GoalForm = () => {
   return (
     <Container className='goalform-container'>
       <Form onSubmit={handleSubmit}>
-        <Form.Row>
-          <Col>
-            <Form.Control
-              required
-              type='goalName'
-              value={goalName}
-              onChange={e => setGoalName(e.target.value)}
-              placeholder='Enter Goal Name'
-            />
-            {goalNameInvalid && (
-              <Container>
-                <FormError error='Goal names must be unique' />
-                <FormError error='Goal names must be words' />
-              </Container>
-            )}
-          </Col>
-          <Col>
-            <Form.Control
-              required
-              type='goalTarget'
-              value={goalTarget}
-              onChange={e => setGoalTarget(e.target.value)}
-              placeholder='Enter Weekly Target'
-            />
-            {goalTargetInvalid && (
-              <Container>
-                <FormError error='Target must be a full number' />
-                <FormError error='Target must be greater than 0' />
-              </Container>
-            )}
-          </Col>
-        </Form.Row>
+        {formDisplayed && (
+          <Form.Row>
+            <Col>
+              <Form.Control
+                required
+                type='goalName'
+                value={goalName}
+                onChange={e => setGoalName(e.target.value)}
+                placeholder='Enter Goal Name'
+              />
+              {goalNameInvalid && (
+                <Container>
+                  <FormError error='Goal names must be unique' />
+                  <FormError error='Goal names must be words' />
+                </Container>
+              )}
+            </Col>
+            <Col>
+              <Form.Control
+                required
+                type='goalTarget'
+                value={goalTarget}
+                onChange={e => setGoalTarget(e.target.value)}
+                placeholder='Enter Weekly Target'
+              />
+              {goalTargetInvalid && (
+                <Container>
+                  <FormError error='Target must be a full number' />
+                  <FormError error='Target must be greater than 0' />
+                </Container>
+              )}
+            </Col>
+          </Form.Row>
+        )}
         <Button
           type='submit'
           className='goalForm-submit-button'
