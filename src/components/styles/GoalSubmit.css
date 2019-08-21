@@ -1,0 +1,37 @@
+.goalSubmit-done-button {
+  margin-right: 15.5px;
+  float: right;
+  color: green;
+  background-color: inherit;
+  border-color: rgba(0, 0, 0, 0);
+}
+.goalSubmit-done-button:hover {
+  background-color: rgb(156, 158, 156);
+  border-color: rgb(156, 158, 156);
+}
+.goalSubmit-done-button:hover:disabled {
+  background-color: inherit;
+  border-color: rgba(40, 167, 69, 0);
+}
+.goalSubmit-done-button:enabled {
+  box-shadow: none;
+}
+.goalSubmit-done-button:active {
+  box-shadow: none !important;
+}
+
+.goalSubmit-form-control {
+  width: 25px !important;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  background-color: inherit;
+  padding: 0;
+  text-align: center;
+  border-radius: 0;
+}
+.goalSubmit-form-control:enabled {
+  background-color: inherit;
+  box-shadow: none;
+  border-bottom-color: black;
+}

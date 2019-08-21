@@ -93,6 +93,7 @@ GoalOptions.propTypes = {
   goal: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    target_type: PropTypes.number.isRequired,
     target: PropTypes.number.isRequired,
     timestamp: PropTypes.string.isRequired,
     instances: PropTypes.arrayOf(

@@ -15,7 +15,7 @@ const ChangeGoalForm = ({ goal, hideChangeGoalForm }) => {
   const [newGoalName, setNewGoalName] = useState('');
   const [newGoalTarget, setNewGoalTarget] = useState('');
 
-  const handleFormSubmit = async e => {
+  const handleFormSubmit = e => {
     e.preventDefault();
     if (!(newGoalName === '' && newGoalTarget === '')) {
       dispatch(changeGoalAction(goal, newGoalName, newGoalTarget));

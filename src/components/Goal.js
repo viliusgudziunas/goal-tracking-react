@@ -1,29 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Accordion, Card, Form } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { Row, Col, Accordion, Card } from 'react-bootstrap';
 import './styles/Goal.css';
 import PropTypes from 'prop-types';
-import { completeGoalAction } from '../actions/goalActions';
 import GoalOptions from './GoalOptions';
+import GoalSubmit from './GoalSubmit';
 import { goalCompletedService } from '../services/goalService';
 
 const Goal = ({ goal }) => {
-  const dispatch = useDispatch();
   const [goalCardHeaderCSS, setGoalCardHeaderCSS] = useState('');
-  const [goalCompleteButtonDisabled, setGoalCompleteButtonDisabled] = useState(
-    false
-  );
+  const [goalCompleted, setGoalCompleted] = useState(false);
 
   useEffect(() => {
     if (goalCompletedService(goal.instances)) {
       setGoalCardHeaderCSS('goal-card-header-completed');
-      setGoalCompleteButtonDisabled(true);
+      setGoalCompleted(true);
     } else {
       setGoalCardHeaderCSS('goal-card-header-uncompleted');
-      setGoalCompleteButtonDisabled(false);
+      setGoalCompleted(false);
     }
   }, [goal.instances]);
-  console.log(goal);
 
   return (
     <Card>
@@ -36,32 +31,7 @@ const Goal = ({ goal }) => {
           >
             {goal.name}
           </Accordion.Toggle>
-          {goal.target_type === 2 ? (
-            <Col>
-              <Form>
-                <Form.Control required />
-                <Button
-                  variant='success'
-                  size='sm'
-                  className='goal-done-button'
-                  onClick={() => dispatch(completeGoalAction(goal))}
-                  disabled={goalCompleteButtonDisabled}
-                >
-                  &#10004;
-                </Button>
-              </Form>
-            </Col>
-          ) : (
-            <Button
-              variant='success'
-              size='sm'
-              className='goal-done-button'
-              onClick={() => dispatch(completeGoalAction(goal))}
-              disabled={goalCompleteButtonDisabled}
-            >
-              &#10004;
-            </Button>
-          )}
+          <GoalSubmit goal={goal} goalCompleted={goalCompleted} />
         </Row>
       </Card.Header>
       <Accordion.Collapse eventKey={goal.id}>
