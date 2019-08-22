@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Container } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import './styles/GoalSubmit.css';
 import PropTypes from 'prop-types';
@@ -29,7 +29,25 @@ const GoalSubmit = ({ goal, goalCompleted }) => {
   const handleFormSubmit = e => {
     e.preventDefault();
     dispatch(completeGoalType2Action(goal, completedHours));
+    setCompletedHours('');
   };
+
+  if (goalCompleted) {
+    return (
+      <Container className='goalSubmit-goal-completed-container'>
+        &nbsp;Hours&nbsp;
+        <Button
+          variant='success'
+          type='submit'
+          size='sm'
+          className='goalSubmit-done-button'
+          disabled={goalCompleted}
+        >
+          &#10004;
+        </Button>
+      </Container>
+    );
+  }
 
   return (
     <Form inline='true' onSubmit={handleFormSubmit}>

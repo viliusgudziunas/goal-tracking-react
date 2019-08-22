@@ -22,16 +22,21 @@
 
 .goalSubmit-form-control {
   width: 25px !important;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  background-color: inherit;
+  border: none;
   padding: 0;
   text-align: center;
-  border-radius: 0;
 }
 .goalSubmit-form-control:enabled {
-  background-color: inherit;
+  background-color: rgb(200, 200, 200);
   box-shadow: none;
   border-bottom-color: black;
+}
+
+.goalSubmit-goal-completed-container {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  width: auto;
+  padding: 0;
+  margin: 0;
 }

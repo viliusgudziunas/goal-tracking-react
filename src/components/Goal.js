@@ -4,21 +4,38 @@ import './styles/Goal.css';
 import PropTypes from 'prop-types';
 import GoalOptions from './GoalOptions';
 import GoalSubmit from './GoalSubmit';
-import { goalCompletedService } from '../services/goalService';
+import {
+  type1GoalCompletedService,
+  type2GoalCompletedService
+} from '../services/goalService';
 
 const Goal = ({ goal }) => {
   const [goalCardHeaderCSS, setGoalCardHeaderCSS] = useState('');
   const [goalCompleted, setGoalCompleted] = useState(false);
 
   useEffect(() => {
-    if (goalCompletedService(goal.instances)) {
-      setGoalCardHeaderCSS('goal-card-header-completed');
-      setGoalCompleted(true);
-    } else {
-      setGoalCardHeaderCSS('goal-card-header-uncompleted');
-      setGoalCompleted(false);
+    switch (goal.target_type) {
+      case 1:
+        if (type1GoalCompletedService(goal.instances)) {
+          setGoalCardHeaderCSS('goal-card-header-completed');
+          setGoalCompleted(true);
+        } else {
+          setGoalCardHeaderCSS('goal-card-header-uncompleted');
+          setGoalCompleted(false);
+        }
+        break;
+      case 2:
+        if (type2GoalCompletedService(goal.instances, goal.target)) {
+          setGoalCardHeaderCSS('goal-card-header-completed');
+          setGoalCompleted(true);
+        } else {
+          setGoalCardHeaderCSS('goal-card-header-uncompleted');
+          setGoalCompleted(false);
+        }
+        break;
+      default:
     }
-  }, [goal.instances]);
+  }, [goal.target_type, goal.instances, goal.target]);
 
   return (
     <Card>
