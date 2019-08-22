@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import './styles/GoalSubmit.css';
@@ -11,6 +11,12 @@ import {
 const GoalSubmit = ({ goal, goalCompleted }) => {
   const dispatch = useDispatch();
   const [completedHours, setCompletedHours] = useState('');
+
+  useEffect(() => {
+    if (goal.target_type === 2 && goalCompleted) {
+      console.log(goal);
+    }
+  }, [goal.target_type, goalCompleted]);
 
   if (goal.target_type === 1) {
     return (
@@ -35,7 +41,7 @@ const GoalSubmit = ({ goal, goalCompleted }) => {
   if (goalCompleted) {
     return (
       <Container className='goalSubmit-goal-completed-container'>
-        &nbsp;Hours&nbsp;
+        &nbsp;Hours Completed:&nbsp;
         <Button
           variant='success'
           type='submit'
@@ -51,6 +57,7 @@ const GoalSubmit = ({ goal, goalCompleted }) => {
 
   return (
     <Form inline='true' onSubmit={handleFormSubmit}>
+      Hours Completed:&nbsp;&nbsp;
       <Form.Control
         required
         size='sm'
@@ -58,7 +65,7 @@ const GoalSubmit = ({ goal, goalCompleted }) => {
         value={completedHours}
         onChange={e => setCompletedHours(e.target.value)}
       />
-      &nbsp;Hours&nbsp;
+      &nbsp;
       <Button
         variant='success'
         type='submit'
