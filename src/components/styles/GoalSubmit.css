@@ -40,3 +40,24 @@
   padding: 0;
   margin: 0;
 }
+
+.goalSubmit-hours-completed-button {
+  padding: 0;
+  width: 35px;
+  background-color: inherit;
+  color: black;
+  border: none;
+  height: 31px;
+}
+.goalSubmit-hours-completed-button:hover {
+  background-color: rgb(200, 200, 200);
+  color: black;
+}
+.goalSubmit-hours-completed-button:enabled {
+  box-shadow: none;
+}
+.goalSubmit-hours-completed-button:active {
+  background-color: rgb(200, 200, 200) !important;
+  color: black !important;
+  box-shadow: none !important;
+}

@@ -6,20 +6,23 @@ export const type1GoalCompletedService = instances => {
 };
 
 export const type2GoalCompletedService = (instances, target) => {
-  if (instances.length === 0) return false;
-  if (!instanceExistsToday(instances)) return false;
+  // const todaysGoal = Math.ceil(target / 7);
+  // return hoursCompletedToday >= todaysGoal;
+};
+
+export const goalCompletedHoursTodayService = instances => {
+  if (instances.length === 0) return 0;
+  if (!instanceExistsToday(instances)) return 0;
   const todaysInstances = instances.filter(({ timestamp }) => {
     return compareDates(new Date(timestamp));
   });
-  const hoursCompletedToday = todaysInstances
+  return todaysInstances
     .map(instance => {
       return instance.hours_completed;
     })
     .reduce((totalHours, instanceHours) => {
       return totalHours + instanceHours;
     });
-  const todaysGoal = Math.ceil(target / 7);
-  return hoursCompletedToday >= todaysGoal;
 };
 
 export const countGoalInstancesService = timestamp => {

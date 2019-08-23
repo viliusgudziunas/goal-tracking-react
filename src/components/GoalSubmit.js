@@ -7,16 +7,20 @@ import {
   completeGoalType1Action,
   completeGoalType2Action
 } from '../actions/goalActions';
+import { goalCompletedHoursTodayService } from '../services/goalService';
 
 const GoalSubmit = ({ goal, goalCompleted }) => {
   const dispatch = useDispatch();
-  const [completedHours, setCompletedHours] = useState('');
+  const [completedHoursFormField, setCompletedHoursFormField] = useState('');
+  const [goalSubmitFormDisplayed, setGoalSubmitFormDisplayed] = useState(false);
+  const [completedHours, setCompletedHours] = useState(0);
+  // console.log(goal);
 
   useEffect(() => {
-    if (goal.target_type === 2 && goalCompleted) {
-      console.log(goal);
+    if (goal.target_type === 2) {
+      setCompletedHours(goalCompletedHoursTodayService(goal.instances));
     }
-  }, [goal.target_type, goalCompleted]);
+  }, [goal.target_type, goal.instances]);
 
   if (goal.target_type === 1) {
     return (
@@ -34,8 +38,9 @@ const GoalSubmit = ({ goal, goalCompleted }) => {
 
   const handleFormSubmit = e => {
     e.preventDefault();
-    dispatch(completeGoalType2Action(goal, completedHours));
-    setCompletedHours('');
+    dispatch(completeGoalType2Action(goal, completedHoursFormField));
+    setCompletedHoursFormField('');
+    setGoalSubmitFormDisplayed(false);
   };
 
   if (goalCompleted) {
@@ -58,13 +63,22 @@ const GoalSubmit = ({ goal, goalCompleted }) => {
   return (
     <Form inline='true' onSubmit={handleFormSubmit}>
       Hours Completed:&nbsp;&nbsp;
-      <Form.Control
-        required
-        size='sm'
-        className='goalSubmit-form-control'
-        value={completedHours}
-        onChange={e => setCompletedHours(e.target.value)}
-      />
+      {goalSubmitFormDisplayed ? (
+        <Form.Control
+          required
+          size='sm'
+          className='goalSubmit-form-control'
+          value={completedHoursFormField}
+          onChange={e => setCompletedHoursFormField(e.target.value)}
+        />
+      ) : (
+        <Button
+          className='goalSubmit-hours-completed-button'
+          onClick={() => setGoalSubmitFormDisplayed(true)}
+        >
+          {completedHours}
+        </Button>
+      )}
       &nbsp;
       <Button
         variant='success'
