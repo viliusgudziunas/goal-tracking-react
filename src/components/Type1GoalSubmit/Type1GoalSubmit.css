@@ -1,0 +1,23 @@
+/* Buttons */
+.Type1GoalSubmit-done-button {
+  margin-right: 15.5px;
+  float: right;
+  color: green;
+  background-color: inherit;
+  border-color: rgba(0, 0, 0, 0);
+}
+.Type1GoalSubmit-done-button:hover {
+  background-color: rgb(156, 158, 156);
+  border-color: rgb(156, 158, 156);
+}
+.Type1GoalSubmit-done-button:enabled {
+  box-shadow: none;
+}
+.Type1GoalSubmit-done-button:active {
+  box-shadow: none !important;
+}
+.Type1GoalSubmit-done-button:disabled {
+  background-color: inherit;
+  border-color: rgba(40, 167, 69, 0);
+}
+/* Buttons */

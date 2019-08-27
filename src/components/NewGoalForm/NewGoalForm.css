@@ -1,61 +1,75 @@
-.goalform-container {
+/* Containers */
+.NewGoalForm-form-container {
   text-align: center;
   border-top: 1px solid black;
   padding: 2%;
 }
+/* Containers */
 
-.goalForm-submit-button {
+/* Rows */
+.NewGoalForm-buttons-row {
+  justify-content: center;
+}
+/* Rows */
+
+/* Buttons */
+/* -Add New Goal Button */
+.NewGoalForm-add-new-goal-button {
   background: none;
   color: green;
   border: none;
   padding: 0;
 }
-.goalForm-submit-button:hover {
+.NewGoalForm-add-new-goal-button:hover {
   background: none;
   color: green;
   text-decoration: underline;
 }
-.goalForm-submit-button:enabled {
+.NewGoalForm-add-new-goal-button:enabled {
   box-shadow: none;
 }
-.goalForm-submit-button:active {
+.NewGoalForm-add-new-goal-button:active {
   color: green !important;
   background-color: white !important;
   border-color: none !important;
   box-shadow: none !important;
 }
-.goalForm-submit-button:disabled {
+.NewGoalForm-add-new-goal-button:disabled {
   background: none;
   color: green;
 }
-.goalForm-submit-button:disabled:hover {
+.NewGoalForm-add-new-goal-button:disabled:hover {
   text-decoration: none;
 }
+/* -Add New Goal Button */
 
-.goalForm-back-button {
+/* -Back Button */
+.NewGoalForm-back-button {
   background: none;
   color: rgb(95, 89, 89);
   border: none;
   padding: 0;
 }
-.goalForm-back-button:hover {
+.NewGoalForm-back-button:hover {
   background: none;
   color: rgb(95, 89, 89);
   text-decoration: underline;
 }
-.goalForm-back-button:enabled {
+.NewGoalForm-back-button:enabled {
   box-shadow: none;
 }
-.goalForm-back-button:active {
+.NewGoalForm-back-button:active {
   color: rgb(95, 89, 89) !important;
   background-color: white !important;
   border-color: none !important;
   box-shadow: none !important;
 }
-.goalForm-back-button:disabled {
+.NewGoalForm-back-button:disabled {
   background: none;
   color: rgb(95, 89, 89);
 }
-.goalForm-back-button:disabled:hover {
+.NewGoalForm-back-button:disabled:hover {
   text-decoration: none;
 }
+/* -Back Button */
+/* Buttons */

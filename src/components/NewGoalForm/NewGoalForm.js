@@ -1,43 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Form, Col, Button } from 'react-bootstrap';
-import './styles/GoalForm.css';
-import { addNewGoalAction } from '../actions/goalActions';
+import { Container, Form, Col, Button, Row } from 'react-bootstrap';
+import './NewGoalForm.css';
+import { addNewGoalAction } from '../../actions/goalActions';
 import {
   goalNameValidationService,
   goalTargetValidationService
-} from '../services/validationService';
-import FormError from './FormError';
+} from '../../services/validationService';
+import FormError from '../FormError';
 
-const GoalForm = () => {
+const NewGoalForm = () => {
   const dispatch = useDispatch();
   const [formDisplayed, setFormDisplayed] = useState(false);
   const [goalName, setGoalName] = useState('');
-  const [goalTarget, setGoalTarget] = useState('');
   const [goalTargetType, setGoalTargetType] = useState(1);
+  const [goalTarget, setGoalTarget] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (!formDisplayed) {
-      setFormDisplayed(true);
-    } else {
-      dispatch(
-        addNewGoalAction({
-          name: goalName.trim(),
-          target_type: goalTargetType,
-          target: goalTarget
-        })
-      );
-      setGoalName('');
-      setGoalTarget('');
-      setFormDisplayed(false);
+    dispatch(
+      addNewGoalAction({
+        name: goalName.trim(),
+        target_type: goalTargetType,
+        target: goalTarget
+      })
+    );
+    setGoalName('');
+    setGoalTarget('');
+    setFormDisplayed(false);
+  };
+
+  const handleTargetTypeChange = e => {
+    switch (e.target.value) {
+      case 'Track once a day e.g. Working Out':
+        setGoalTargetType(1);
+        break;
+      case 'Track hours every day e.g. Reading':
+        setGoalTargetType(2);
+        break;
+      default:
+        break;
     }
   };
 
   const goals = useSelector(state => state.goals.items);
-  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const [goalNameInvalid, setGoalNameInvalid] = useState(false);
   const [goalTargetInvalid, setGoalTargetInvalid] = useState(false);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
   useEffect(() => {
     if (goalNameValidationService(goals, goalName)) {
@@ -65,24 +74,11 @@ const GoalForm = () => {
     setFormDisplayed(false);
   };
 
-  const handleTargetTypeChange = e => {
-    switch (e.target.value) {
-      case 'Track once a day e.g. Working Out':
-        setGoalTargetType(1);
-        break;
-      case 'Track hours every day e.g. Reading':
-        setGoalTargetType(2);
-        break;
-      default:
-        break;
-    }
-  };
-
   return (
-    <Container className='goalform-container'>
-      <Form onSubmit={handleSubmit}>
-        {formDisplayed && (
-          <Form.Group as={Form.Row} controlId='formGoalName'>
+    <Container className='NewGoalForm-form-container'>
+      {formDisplayed ? (
+        <Form onSubmit={handleSubmit}>
+          <Form.Group as={Form.Row} controlId='newGoalName'>
             <Form.Label column sm='3'>
               Goal Name
             </Form.Label>
@@ -101,8 +97,6 @@ const GoalForm = () => {
               )}
             </Col>
           </Form.Group>
-        )}
-        {formDisplayed && (
           <Form.Group as={Form.Row} controlId='formGoalTargetChoice'>
             <Form.Label column sm='3'>
               Target Type
@@ -114,9 +108,7 @@ const GoalForm = () => {
               </Form.Control>
             </Col>
           </Form.Group>
-        )}
-        {formDisplayed && (
-          <Form.Group as={Form.Row} controlId='formGoalTarget'>
+          <Form.Group as={Form.Row} controlId='newGoalTarget'>
             <Form.Label column sm='3'>
               Goal Target
             </Form.Label>
@@ -135,25 +127,33 @@ const GoalForm = () => {
               )}
             </Col>
           </Form.Group>
-        )}
+          <Row className='NewGoalForm-buttons-row'>
+            <Button
+              type='submit'
+              className='NewGoalForm-add-new-goal-button'
+              disabled={submitButtonDisabled}
+            >
+              Add New Goal
+            </Button>
+            <Col sm='1'>|</Col>
+            <Button
+              className='NewGoalForm-back-button'
+              onClick={handleNewGoalBackButtonClick}
+            >
+              Back
+            </Button>
+          </Row>
+        </Form>
+      ) : (
         <Button
-          type='submit'
-          className='goalForm-submit-button'
-          disabled={submitButtonDisabled}
+          className='NewGoalForm-add-new-goal-button'
+          onClick={() => setFormDisplayed(true)}
         >
           Add New Goal
         </Button>
-        {formDisplayed && (
-          <Button
-            className='goalForm-back-button'
-            onClick={handleNewGoalBackButtonClick}
-          >
-            &nbsp; | &nbsp;Back
-          </Button>
-        )}
-      </Form>
+      )}
     </Container>
   );
 };
 
-export default GoalForm;
+export default NewGoalForm;

@@ -1,13 +1,13 @@
 import React from 'react';
-import './styles/GoalsHeader.css';
+import './Header.css';
 import { Row, Col } from 'react-bootstrap';
 
-const GoalsHeader = () => {
+const Header = () => {
   return (
-    <Row className='goals-header'>
+    <Row className='Header-row'>
       <Col>Goals Tracker</Col>
     </Row>
   );
 };
 
-export default GoalsHeader;
+export default Header;

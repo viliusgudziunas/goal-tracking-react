@@ -1,22 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Card, Button, Row } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import './styles/GoalOptions.css';
+import './GoalOptions.css';
 import PropTypes from 'prop-types';
-import { deleteGoalAction } from '../actions/goalActions';
-import { countGoalInstancesService } from '../services/goalService';
-import ChangeGoalForm from './ChangeGoalForm';
+import { deleteGoalAction } from '../../actions/goalActions';
+import {
+  countGoalInstancesService,
+  countGoalHoursService
+} from '../../services/goalService';
+import ChangeGoalForm from '../ChangeGoalForm';
 
 const GoalOptions = ({ goal }) => {
   const dispatch = useDispatch();
-  const [completedGoalsThisWeek, setCompletedGoalsThisWeek] = useState(0);
+  const [completedThisWeek, setCompletedThisWeek] = useState(0);
 
   useEffect(() => {
-    const goalInstancesThisWeek = goal.instances.filter(({ timestamp }) =>
-      countGoalInstancesService(timestamp)
-    ).length;
-    setCompletedGoalsThisWeek(goalInstancesThisWeek);
-  }, [goal]);
+    switch (goal.target_type) {
+      case 1:
+        setCompletedThisWeek(
+          goal.instances.filter(({ timestamp }) =>
+            countGoalInstancesService(timestamp)
+          ).length
+        );
+        break;
+      case 2:
+        setCompletedThisWeek(countGoalHoursService(goal.instances));
+        break;
+      default:
+    }
+  }, [goal.target_type, goal.instances]);
 
   const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
   const [changeGoalButtonDisabled, setChangeGoalButtonDisabled] = useState(
@@ -35,37 +47,20 @@ const GoalOptions = ({ goal }) => {
     setDeleteButtonDisabled(false);
   };
 
-  const countInstancesThisWeek = timestamp => {
-    const lastMonday = new Date();
-    lastMonday.setHours(0, 0, 0, 0);
-    while (lastMonday.getDay() !== 1) {
-      lastMonday.setDate(lastMonday.getDate() - 1);
-    }
-    return lastMonday < new Date(timestamp);
-  };
-
-  useEffect(() => {
-    const goalInstancesThisWeek = goal.instances.filter(({ timestamp }) =>
-      countInstancesThisWeek(timestamp)
-    ).length;
-    setCompletedGoalsThisWeek(goalInstancesThisWeek);
-  }, [goal]);
-
   return (
     <Card.Body>
-      <Container className='goalOptions-container1'>
+      <Container className='GoalOptions-top-container'>
         <Row>
-          Weekly Progress: {completedGoalsThisWeek}/{goal.target}
+          Weekly Progress: {completedThisWeek}/{goal.target}
         </Row>
       </Container>
-      {changeGoalFormDisplayed && (
+      {changeGoalFormDisplayed ? (
         <ChangeGoalForm goal={goal} hideChangeGoalForm={hideChangeGoalForm} />
-      )}
-      {!changeGoalFormDisplayed && (
-        <Container className='goalOptions-container2'>
+      ) : (
+        <Container className='GoalOptions-bottom-container'>
           <Row>
             <Button
-              className='goalOptions-change-goal-button'
+              className='GoalOptions-change-goal-button'
               onClick={handleChangeGoalButtonClick}
               disabled={changeGoalButtonDisabled}
             >
@@ -74,7 +69,7 @@ const GoalOptions = ({ goal }) => {
           </Row>
           <Row>
             <Button
-              className='goalOptions-delete-button'
+              className='GoalOptions-delete-goal-button'
               onClick={() => dispatch(deleteGoalAction(goal))}
               disabled={deleteButtonDisabled}
             >

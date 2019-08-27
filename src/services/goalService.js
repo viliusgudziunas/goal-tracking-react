@@ -1,13 +1,9 @@
 import { instanceExistsToday, compareDates } from './helpers';
+import { log } from 'util';
 
 export const type1GoalCompletedService = instances => {
   if (instances.length === 0) return false;
   return instanceExistsToday(instances);
-};
-
-export const type2GoalCompletedService = (instances, target) => {
-  // const todaysGoal = Math.ceil(target / 7);
-  // return hoursCompletedToday >= todaysGoal;
 };
 
 export const goalCompletedHoursTodayService = instances => {
@@ -25,6 +21,11 @@ export const goalCompletedHoursTodayService = instances => {
     });
 };
 
+export const type2GoalCompletedService = (instances, target) => {
+  const todaysGoal = Math.ceil(target / 7);
+  return goalCompletedHoursTodayService(instances) >= todaysGoal;
+};
+
 export const countGoalInstancesService = timestamp => {
   const lastMonday = new Date();
   lastMonday.setHours(0, 0, 0, 0);
@@ -32,4 +33,16 @@ export const countGoalInstancesService = timestamp => {
     lastMonday.setDate(lastMonday.getDate() - 1);
   }
   return lastMonday < new Date(timestamp);
+};
+
+export const countGoalHoursService = instances => {
+  if (instances.length === 0) return 0;
+  return instances
+    .filter(({ timestamp }) => countGoalInstancesService(timestamp))
+    .map(instance => {
+      return instance.hours_completed;
+    })
+    .reduce((totalHours, instanceHours) => {
+      return totalHours + instanceHours;
+    });
 };

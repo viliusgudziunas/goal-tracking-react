@@ -1,14 +1,14 @@
 import React from 'react';
 import { Accordion } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import './styles/Goals.css';
-import Goal from './Goal';
+import './GoalsList.css';
+import Goal from '../Goal/Goal';
 
-const Goals = () => {
+const GoalsList = () => {
   const goals = useSelector(state => state.goals.items);
 
   return (
-    <Accordion className='goals-accordion'>
+    <Accordion className='GoalsList-accordion'>
       {goals.map(goal => {
         return <Goal key={goal.id} goal={goal} />;
       })}
@@ -16,4 +16,4 @@ const Goals = () => {
   );
 };
 
-export default Goals;
+export default GoalsList;

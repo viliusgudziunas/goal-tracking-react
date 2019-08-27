@@ -1,0 +1,29 @@
+/* Accordions */
+/* -Accordion.Toggle */
+.Goal-accordion-toggle {
+  margin-left: 1%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  padding-left: 5%;
+}
+/* -Accordion.Toggle */
+/* Accordions */
+
+/* Cards */
+/* -Card Header */
+/* --Completed Card Header */
+.Goal-card-header-completed {
+  background: rgb(40, 167, 69);
+  padding: 0;
+  cursor: pointer;
+}
+/* --Completed Card Header */
+
+/* --Uncompleted Card Header */
+.Goal-card-header-uncompleted {
+  padding: 0;
+  cursor: pointer;
+}
+/* --Uncompleted Card Header */
+/* -Card Header */
+/* Cards */
