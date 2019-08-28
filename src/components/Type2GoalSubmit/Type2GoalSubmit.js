@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Form, Button, Container, Col } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import './Type2GoalSubmit.css';
 import PropTypes from 'prop-types';
 import { completeGoalType2Action } from '../../actions/goalActions';
 import { goalCompletedHoursTodayService } from '../../services/goalService';
+import { hoursCompletedValidationService } from '../../services/validationService';
 
 const Type2GoalSubmit = ({ goal, goalCompleted }) => {
   const dispatch = useDispatch();
@@ -30,6 +31,34 @@ const Type2GoalSubmit = ({ goal, goalCompleted }) => {
     setCompleteButtonDisabled(false);
   };
 
+  const inputRef = useRef();
+  const nodeRef = useRef();
+
+  const handleClick = e => {
+    if (nodeRef.current && !nodeRef.current.contains(e.target)) {
+      setCompletedHoursFormField('');
+      setGoalSubmitFormDisplayed(false);
+      setCompleteButtonDisabled(true);
+    }
+  };
+
+  useEffect(() => {
+    if (goalSubmitFormDisplayed) inputRef.current.focus();
+    document.addEventListener('mousedown', handleClick);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, [goalSubmitFormDisplayed]);
+
+  const handleCompletedHoursFormFieldChange = e => {
+    setCompletedHoursFormField(e.target.value);
+    if (hoursCompletedValidationService(e.target.value)) {
+      setCompleteButtonDisabled(false);
+    } else {
+      setCompleteButtonDisabled(true);
+    }
+  };
+
   if (goalCompleted) {
     return (
       <Container className='Type2GoalSubmit-container'>
@@ -52,14 +81,15 @@ const Type2GoalSubmit = ({ goal, goalCompleted }) => {
 
   if (goalSubmitFormDisplayed) {
     return (
-      <Form inline='true' onSubmit={handleFormSubmit}>
+      <Form inline='true' onSubmit={handleFormSubmit} ref={nodeRef}>
         Hours Completed:&nbsp;
         <Form.Control
           required
           size='sm'
           className='Type2GoalSubmit-form-control'
           value={completedHoursFormField}
-          onChange={e => setCompletedHoursFormField(e.target.value)}
+          onChange={handleCompletedHoursFormFieldChange}
+          ref={inputRef}
         />
         <Button
           variant='success'

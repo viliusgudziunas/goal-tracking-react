@@ -14,6 +14,8 @@
   box-shadow: none;
 }
 .Type1GoalSubmit-done-button:active {
+  background-color: green !important;
+  border-color: green !important;
   box-shadow: none !important;
 }
 .Type1GoalSubmit-done-button:disabled {

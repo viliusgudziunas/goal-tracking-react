@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Container, Button, Form, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import './ChangeGoalForm.css';
@@ -60,6 +60,12 @@ const ChangeGoalForm = ({ goal, hideChangeGoalForm }) => {
     hideChangeGoalForm();
   };
 
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   return (
     <Container className='changeGoalForm-container'>
       <Form onSubmit={handleFormSubmit}>
@@ -73,6 +79,7 @@ const ChangeGoalForm = ({ goal, hideChangeGoalForm }) => {
               value={newGoalName}
               onChange={e => setNewGoalName(e.target.value)}
               placeholder='Enter New Goal Name'
+              ref={inputRef}
             />
             {newGoalNameInvalid && (
               <Container>

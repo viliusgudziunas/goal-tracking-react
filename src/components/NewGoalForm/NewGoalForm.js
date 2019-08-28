@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Form, Col, Button, Row } from 'react-bootstrap';
 import './NewGoalForm.css';
@@ -26,6 +26,7 @@ const NewGoalForm = () => {
       })
     );
     setGoalName('');
+    setGoalTargetType(1);
     setGoalTarget('');
     setFormDisplayed(false);
   };
@@ -74,6 +75,12 @@ const NewGoalForm = () => {
     setFormDisplayed(false);
   };
 
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (formDisplayed) inputRef.current.focus();
+  }, [formDisplayed]);
+
   return (
     <Container className='NewGoalForm-form-container'>
       {formDisplayed ? (
@@ -88,6 +95,7 @@ const NewGoalForm = () => {
                 value={goalName}
                 onChange={e => setGoalName(e.target.value)}
                 placeholder='Enter Goal Name'
+                ref={inputRef}
               />
               {goalNameInvalid && (
                 <Container>
