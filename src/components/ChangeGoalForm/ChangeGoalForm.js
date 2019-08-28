@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Form, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import './styles/ChangeGoalForm.css';
+import './ChangeGoalForm.css';
 import PropTypes from 'prop-types';
-import { changeGoalAction } from '../actions/goalActions';
+import { changeGoalAction } from '../../actions/goalActions';
 import {
   goalNameValidationService,
   goalTargetValidationService
-} from '../services/validationService';
-import FormError from './FormError';
+} from '../../services/validationService';
+import FormError from '../FormError/FormError';
 
 const ChangeGoalForm = ({ goal, hideChangeGoalForm }) => {
   const dispatch = useDispatch();

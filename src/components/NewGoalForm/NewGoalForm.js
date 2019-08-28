@@ -7,7 +7,7 @@ import {
   goalNameValidationService,
   goalTargetValidationService
 } from '../../services/validationService';
-import FormError from '../FormError';
+import FormError from '../FormError/FormError';
 
 const NewGoalForm = () => {
   const dispatch = useDispatch();

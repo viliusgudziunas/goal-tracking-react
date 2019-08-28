@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import './styles/FormError.css';
+import './FormError.css';
 import PropTypes from 'prop-types';
 
 const FormError = ({ error }) => {

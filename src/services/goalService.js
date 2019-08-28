@@ -1,5 +1,4 @@
 import { instanceExistsToday, compareDates } from './helpers';
-import { log } from 'util';
 
 export const type1GoalCompletedService = instances => {
   if (instances.length === 0) return false;

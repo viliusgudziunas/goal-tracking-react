@@ -8,7 +8,7 @@ import {
   countGoalInstancesService,
   countGoalHoursService
 } from '../../services/goalService';
-import ChangeGoalForm from '../ChangeGoalForm';
+import ChangeGoalForm from '../ChangeGoalForm/ChangeGoalForm';
 
 const GoalOptions = ({ goal }) => {
   const dispatch = useDispatch();
