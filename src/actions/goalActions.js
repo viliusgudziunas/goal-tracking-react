@@ -1,7 +1,8 @@
 import {
   FETCH_GOALS,
   NEW_GOAL,
-  COMPLETE_GOAL,
+  COMPLETE_TYPE1_GOAL,
+  COMPLETE_TYPE2_GOAL,
   DELETE_GOAL,
   CHANGE_GOAL
 } from './types';
@@ -34,7 +35,7 @@ export const addNewGoalAction = goalData => dispatch => {
   );
 };
 
-export const completeGoalAction = goalData => dispatch => {
+export const completeGoalType1Action = goalData => dispatch => {
   fetch('/goals/new-goal-instance', {
     method: 'POST',
     headers: {
@@ -44,7 +45,24 @@ export const completeGoalAction = goalData => dispatch => {
   }).then(res =>
     res.json().then(goal =>
       dispatch({
-        type: COMPLETE_GOAL,
+        type: COMPLETE_TYPE1_GOAL,
+        payload: { oldGoal: goalData, newGoal: goal }
+      })
+    )
+  );
+};
+
+export const completeGoalType2Action = (goalData, hours) => dispatch => {
+  fetch('/goals/new-goal-instance', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ goal_id: goalData.id, hours_completed: hours })
+  }).then(res =>
+    res.json().then(goal =>
+      dispatch({
+        type: COMPLETE_TYPE2_GOAL,
         payload: { oldGoal: goalData, newGoal: goal }
       })
     )

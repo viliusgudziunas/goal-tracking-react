@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { fetchGoalsAction } from './actions/goalActions';
-import Goals from './components/Goals';
-import GoalForm from './components/GoalForm';
-import GoalsHeader from './components/GoalsHeader';
-import validationService from './components/services/validationService';
+import GoalsList from './components/GoalsList/GoalsList';
+import NewGoalForm from './components/NewGoalForm/NewGoalForm';
+import Header from './components/Header/Header';
 
 function App() {
   const dispatch = useDispatch();
@@ -16,9 +15,9 @@ function App() {
 
   return (
     <Container>
-      <GoalsHeader />
-      <Goals />
-      <GoalForm />
+      <Header />
+      <GoalsList />
+      <NewGoalForm />
     </Container>
   );
 }

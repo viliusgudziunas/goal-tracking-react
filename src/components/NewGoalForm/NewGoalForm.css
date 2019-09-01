@@ -1,0 +1,75 @@
+/* Containers */
+.NewGoalForm-form-container {
+  text-align: center;
+  border-top: 1px solid black;
+  padding: 2%;
+}
+/* Containers */
+
+/* Rows */
+.NewGoalForm-buttons-row {
+  justify-content: center;
+}
+/* Rows */
+
+/* Buttons */
+/* -Add New Goal Button */
+.NewGoalForm-add-new-goal-button {
+  background: none;
+  color: green;
+  border: none;
+  padding: 0;
+}
+.NewGoalForm-add-new-goal-button:hover {
+  background: none;
+  color: green;
+  text-decoration: underline;
+}
+.NewGoalForm-add-new-goal-button:enabled {
+  box-shadow: none;
+}
+.NewGoalForm-add-new-goal-button:active {
+  color: green !important;
+  background-color: white !important;
+  border-color: none !important;
+  box-shadow: none !important;
+}
+.NewGoalForm-add-new-goal-button:disabled {
+  background: none;
+  color: green;
+}
+.NewGoalForm-add-new-goal-button:disabled:hover {
+  text-decoration: none;
+}
+/* -Add New Goal Button */
+
+/* -Back Button */
+.NewGoalForm-back-button {
+  background: none;
+  color: rgb(95, 89, 89);
+  border: none;
+  padding: 0;
+}
+.NewGoalForm-back-button:hover {
+  background: none;
+  color: rgb(95, 89, 89);
+  text-decoration: underline;
+}
+.NewGoalForm-back-button:enabled {
+  box-shadow: none;
+}
+.NewGoalForm-back-button:active {
+  color: rgb(95, 89, 89) !important;
+  background-color: white !important;
+  border-color: none !important;
+  box-shadow: none !important;
+}
+.NewGoalForm-back-button:disabled {
+  background: none;
+  color: rgb(95, 89, 89);
+}
+.NewGoalForm-back-button:disabled:hover {
+  text-decoration: none;
+}
+/* -Back Button */
+/* Buttons */

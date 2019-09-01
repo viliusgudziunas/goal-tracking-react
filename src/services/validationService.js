@@ -13,10 +13,9 @@ export const goalNameValidationService = (goals, goalName) => {
 };
 
 export const goalTargetValidationService = goalTarget => {
-  return (
-    goalTarget === '' ||
-    (!isNaN(goalTarget) &&
-      Number.isInteger(Number(goalTarget)) &&
-      goalTarget > 0)
-  );
+  return goalTarget === '' || (goalTarget > 0 && goalTarget % 0.5 === 0);
+};
+
+export const hoursCompletedValidationService = hours => {
+  return hours === '' || (hours > 0 && hours % 0.5 === 0);
 };

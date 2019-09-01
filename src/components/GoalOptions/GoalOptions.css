@@ -1,0 +1,74 @@
+/* Containers */
+/* -Top Container */
+.GoalOptions-top-container {
+  padding-bottom: 1%;
+}
+/* -Top Container */
+
+/* -Bottom Container */
+.GoalOptions-bottom-container {
+  border-top: 1px solid black;
+  padding-top: 1%;
+}
+/* -Bottom Container */
+/* Containers */
+
+/* Buttons */
+/* -Change Goal Button */
+.GoalOptions-change-goal-button {
+  background: none;
+  color: green;
+  border: none;
+  padding: 0;
+  margin-bottom: 1%;
+}
+.GoalOptions-change-goal-button:hover {
+  background: none;
+  color: green;
+  text-decoration: underline;
+}
+.GoalOptions-change-goal-button:enabled {
+  box-shadow: none;
+}
+.GoalOptions-change-goal-button:active {
+  color: green !important;
+  background-color: white !important;
+  border-color: none !important;
+  box-shadow: none !important;
+}
+.GoalOptions-change-goal-button:disabled {
+  background: none;
+  color: green;
+}
+.GoalOptions-change-goal-button:disabled:hover {
+  text-decoration: none;
+}
+/* -Change Goal Button */
+
+/* -Delete Goal Button */
+.GoalOptions-delete-goal-button {
+  background: none;
+  color: red;
+  border: none;
+  padding: 0;
+}
+.GoalOptions-delete-goal-button:hover {
+  background: none;
+  color: red;
+  text-decoration: underline;
+}
+.GoalOptions-delete-goal-button:enabled {
+  box-shadow: none;
+}
+.GoalOptions-delete-goal-button:active {
+  color: red !important;
+  background-color: white !important;
+  border-color: none !important;
+  box-shadow: none !important;
+}
+.GoalOptions-delete-goal-button:disabled {
+  background: none;
+  color: red;
+}
+/* -Delete Goal Button */
+/* Buttons */
